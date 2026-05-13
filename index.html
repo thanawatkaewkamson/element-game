@@ -2,76 +2,251 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>เกมทายตารางธาตุ 118 ธาตุ</title>
   <style>
+    :root {
+      --bg1: #08143a;
+      --bg2: #1733a6;
+      --bg3: #00d4ff;
+      --card: rgba(255, 255, 255, 0.16);
+      --card-solid: #ffffff;
+      --text-dark: #163057;
+      --text-light: #f8fbff;
+      --soft: #dceeff;
+      --yellow: #ffd94d;
+      --orange: #ff9f43;
+      --green: #2ecc71;
+      --red: #ff6b6b;
+      --purple: #8f7cf7;
+      --blue: #4da3ff;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
-      font-family: Tahoma, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
-      color: white;
+      font-family: "Trebuchet MS", Tahoma, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text-light);
+      background:
+        radial-gradient(circle at 18% 16%, rgba(255, 231, 72, 0.38) 0 4px, transparent 5px),
+        radial-gradient(circle at 82% 18%, rgba(0, 255, 209, 0.34) 0 5px, transparent 6px),
+        radial-gradient(circle at 18% 78%, rgba(255, 64, 129, 0.30) 0 5px, transparent 6px),
+        radial-gradient(circle at 78% 82%, rgba(255, 255, 255, 0.18) 0 3px, transparent 4px),
+        radial-gradient(circle at 50% 10%, rgba(0, 212, 255, 0.22), transparent 34%),
+        linear-gradient(145deg, var(--bg1), var(--bg2) 48%, var(--bg3));
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      padding: 16px;
     }
 
     .game-box {
-      width: 460px;
-      background: rgba(255, 255, 255, 0.12);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      width: min(100%, 560px);
+      border-radius: 28px;
+      padding: clamp(16px, 4vw, 28px);
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.28), 0 0 34px rgba(0, 212, 255, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-box::before,
+    .game-box::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .game-box::before {
+      width: 180px;
+      height: 180px;
+      top: -60px;
+      right: -40px;
+      background: rgba(255, 231, 72, 0.28);
+    }
+
+    .game-box::after {
+      width: 140px;
+      height: 140px;
+      bottom: -50px;
+      left: -30px;
+      background: rgba(255, 64, 129, 0.22);
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
       text-align: center;
     }
 
-    h1 {
-      margin-top: 0;
-      font-size: 28px;
-    }
-
-    .subtitle {
-      margin-top: -10px;
-      margin-bottom: 18px;
-      color: #dbeafe;
-      font-size: 14px;
-    }
-
-    .symbol-box {
-      background: white;
-      color: #0f172a;
-      width: 115px;
-      height: 115px;
-      margin: 20px auto;
-      border-radius: 18px;
+    .hero-top {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 48px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-icon {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #fff14d, #ff4fb3);
+      box-shadow: 0 10px 24px rgba(255, 79, 179, 0.36), 0 0 18px rgba(255, 241, 77, 0.35);
+      font-size: 30px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 6vw, 36px);
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    }
+
+    .subtitle {
+      font-size: clamp(13px, 3.5vw, 15px);
+      color: #eaf5ff;
+      margin-top: 2px;
+    }
+
+    .science-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .science-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.10));
+      border: 1px solid rgba(255,255,255,0.26);
+      border-radius: 18px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .science-card .emoji {
+      display: block;
+      font-size: clamp(24px, 6vw, 30px);
+      margin-bottom: 4px;
+    }
+
+    .science-card .label {
+      font-size: clamp(12px, 3.2vw, 13px);
+      color: #f6fbff;
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .info div {
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: clamp(13px, 3.5vw, 16px);
       font-weight: bold;
     }
 
+    .info span {
+      display: block;
+      margin-top: 4px;
+      font-size: clamp(15px, 4vw, 18px);
+      color: #fff8c5;
+    }
+
+    .symbol-box {
+      width: clamp(100px, 28vw, 128px);
+      height: clamp(100px, 28vw, 128px);
+      margin: 12px auto 18px;
+      background: linear-gradient(180deg, #ffffff, #e7fbff);
+      color: var(--text-dark);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(42px, 12vw, 58px);
+      font-weight: 900;
+      box-shadow: 0 12px 26px rgba(22,48,87,0.18);
+      border: 4px solid rgba(255,255,255,0.75);
+      position: relative;
+    }
+
+    .symbol-box::after {
+      content: "⚛️";
+      position: absolute;
+      right: -12px;
+      top: -12px;
+      font-size: 28px;
+      transform: rotate(-12deg);
+    }
+
+    .question-wrap {
+      background: rgba(255,255,255,0.16);
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
     .question {
-      font-size: 20px;
-      margin: 20px 0;
-      line-height: 1.5;
+      margin: 0;
+      font-size: clamp(18px, 4.9vw, 23px);
+      line-height: 1.55;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .choices button {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
+      min-height: 52px;
       border: none;
-      border-radius: 12px;
-      font-size: 17px;
+      border-radius: 18px;
+      padding: 12px 14px;
+      font-size: clamp(16px, 4.5vw, 19px);
+      font-weight: bold;
       cursor: pointer;
-      background: #e0f2fe;
-      color: #0f172a;
-      transition: 0.2s;
+      color: var(--text-dark);
+      background: linear-gradient(180deg, #ffffff, #c9f4ff);
+      box-shadow: 0 6px 14px rgba(14, 60, 120, 0.12);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      touch-action: manipulation;
+      overflow-wrap: anywhere;
     }
 
     .choices button:hover {
-      background: #bae6fd;
-      transform: scale(1.02);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 16px rgba(14, 60, 120, 0.16);
+      background: linear-gradient(180deg, #ffffff, #aeeeff);
     }
 
     .choices button:disabled {
@@ -80,91 +255,224 @@
     }
 
     .correct {
-      background: #22c55e !important;
-      color: white !important;
+      background: linear-gradient(180deg, #34e27a, #22b75b) !important;
+      color: #ffffff !important;
     }
 
     .wrong {
-      background: #ef4444 !important;
-      color: white !important;
-    }
-
-    .info {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 15px;
-      font-size: 16px;
-    }
-
-    .info div {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 8px 10px;
-      border-radius: 12px;
-      flex: 1;
+      background: linear-gradient(180deg, #ff8b8b, #ff6666) !important;
+      color: #ffffff !important;
     }
 
     .result {
-      margin-top: 15px;
-      font-size: 18px;
-      min-height: 56px;
-      line-height: 1.5;
+      min-height: 60px;
+      margin-top: 14px;
+      font-size: clamp(16px, 4.2vw, 18px);
+      line-height: 1.55;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .result small {
+      display: block;
+      margin-top: 6px;
+      font-weight: normal;
+      color: #eaf5ff;
+    }
+
+    .controls {
+      text-align: center;
     }
 
     .next-btn, .restart-btn {
-      margin-top: 15px;
-      padding: 12px 20px;
+      margin-top: 10px;
+      padding: 13px 24px;
       border: none;
-      border-radius: 12px;
-      background: #facc15;
-      color: #0f172a;
-      font-size: 17px;
-      font-weight: bold;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fff14d, #ffb000);
+      color: var(--text-dark);
+      font-size: clamp(16px, 4.4vw, 18px);
+      font-weight: 900;
       cursor: pointer;
+      min-width: 150px;
+      min-height: 50px;
+      box-shadow: 0 12px 20px rgba(255, 176, 0, 0.35), 0 0 18px rgba(255, 241, 77, 0.30);
     }
 
     .next-btn:hover, .restart-btn:hover {
-      background: #fde047;
+      filter: brightness(1.03);
+      transform: translateY(-1px);
     }
 
     .small-note {
       margin-top: 16px;
-      color: #c7d2fe;
-      font-size: 13px;
-      line-height: 1.5;
+      text-align: center;
+      font-size: clamp(12px, 3.4vw, 14px);
+      color: #eaf5ff;
+      line-height: 1.55;
+    }
+
+    .footer-badges {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      color: #ffffff;
+    }
+
+
+    .orbit {
+      position: absolute;
+      border: 2px solid rgba(255,255,255,0.20);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      animation: spin 12s linear infinite;
+    }
+
+    .orbit.one {
+      width: 220px;
+      height: 70px;
+      top: 68px;
+      left: -70px;
+      transform: rotate(-18deg);
+    }
+
+    .orbit.two {
+      width: 250px;
+      height: 82px;
+      right: -88px;
+      bottom: 115px;
+      transform: rotate(22deg);
+      animation-duration: 16s;
+    }
+
+    @keyframes spin {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
+
+    @media (min-width: 720px) {
+      .hero {
+        gap: 16px;
+      }
+
+      .choices {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 10px;
+        align-items: flex-start;
+      }
+
+      .game-box {
+        border-radius: 22px;
+        padding: 14px;
+      }
+
+      .science-strip,
+      .info {
+        gap: 8px;
+      }
+
+      .question-wrap {
+        padding: 12px 12px;
+      }
+    }
+
+    @media (max-height: 720px) and (orientation: landscape) {
+      body {
+        align-items: flex-start;
+      }
+
+      .science-strip {
+        display: none;
+      }
+
+      .symbol-box {
+        width: 90px;
+        height: 90px;
+        font-size: 40px;
+      }
     }
   </style>
 </head>
 <body>
-
   <div class="game-box">
-    <h1>🧪 เกมทายตารางธาตุ</h1>
-    <div class="subtitle">รวมธาตุครบ 118 ธาตุ</div>
+    <div class="orbit one"></div>
+    <div class="orbit two"></div>
+    <div class="content">
+      <div class="hero">
+        <div class="hero-top">
+          <div class="hero-icon">⚗️</div>
+          <div>
+            <h1>เกมทายตารางธาตุ</h1>
+            <div class="subtitle">เรียนรู้ตารางธาตุครบ 118 ธาตุ</div>
+          </div>
+        </div>
 
-    <div class="info">
-      <div>ข้อ: <span id="round">1</span>/10</div>
-      <div>คะแนน: <span id="score">0</span></div>
-      <div>ทั้งหมด: 118</div>
-    </div>
+        <div class="science-strip">
+          <div class="science-card">
+            <span class="emoji">⚛️</span>
+            <span class="label">โลกของอะตอม</span>
+          </div>
+          <div class="science-card">
+            <span class="emoji">🧪</span>
+            <span class="label">คิดแล้วตอบ</span>
+          </div>
+          <div class="science-card">
+            <span class="emoji">🚀</span>
+            <span class="label">สะสมคะแนน</span>
+          </div>
+        </div>
+      </div>
 
-    <div class="symbol-box" id="symbolBox">?</div>
+      <div class="info">
+        <div>ข้อ<span id="round">1/10</span></div>
+        <div>คะแนน<span id="score">0</span></div>
+        <div>ธาตุทั้งหมด<span>118</span></div>
+      </div>
 
-    <div class="question" id="questionText"></div>
+      <div class="symbol-box" id="symbolBox">?</div>
 
-    <div class="choices" id="choicesBox"></div>
+      <div class="question-wrap">
+        <p class="question" id="questionText"></p>
+      </div>
 
-    <div class="result" id="resultText"></div>
+      <div class="choices" id="choicesBox"></div>
 
-    <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
-      ข้อต่อไป
-    </button>
+      <div class="result" id="resultText"></div>
 
-    <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
-      เริ่มใหม่
-    </button>
+      <div class="controls">
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+          ข้อต่อไป
+        </button>
 
-    <div class="small-note">
-      รูปแบบคำถาม: ทายชื่อธาตุ, ทายสัญลักษณ์, และทายเลขอะตอม
+        <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
+          เล่นอีกครั้ง
+        </button>
+      </div>
+
+      <div class="small-note">
+        คำถามมีหลายแบบ เช่น ทายชื่อธาตุ ทายสัญลักษณ์ และทายเลขอะตอม เพื่อช่วยให้จดจำได้ง่ายขึ้น
+      </div>
+
+      <div class="footer-badges">
+        <div class="badge">⚛️ ตารางธาตุ 118 ธาตุ</div>
+        <div class="badge">📱 Responsive</div>
+        <div class="badge">🧠 ฝึกความจำและทักษะ</div>
+      </div>
     </div>
   </div>
 
@@ -296,6 +604,29 @@
     let currentQuestion = null;
     let answered = false;
 
+    const praiseSentences = [
+      "ยอดเยี่ยมมาก! ตอบได้แม่นมาก",
+      "เก่งมาก! คำตอบนี้ถูกต้องเป๊ะ",
+      "สุดยอด! จำตารางธาตุได้ดีมาก",
+      "เยี่ยมเลย! ตอบได้อย่างมั่นใจ",
+      "ตอบถูกแล้ว! ไปต่อได้เลย",
+      "ดีมาก! ความรู้เรื่องธาตุแน่นขึ้นอีกแล้ว",
+      "ว้าว! คำตอบนี้แม่นจริง ๆ",
+      "ยอดเลย! จังหวะตอบดีมาก",
+      "เก่งสุด ๆ! คะแนนกำลังมาแล้ว",
+      "ถูกต้อง! ทำได้ดีมาก"
+    ];
+
+    let unusedPraises = shuffle(praiseSentences);
+
+    function getRandomPraise() {
+      if (unusedPraises.length === 0) {
+        unusedPraises = shuffle(praiseSentences);
+      }
+
+      return unusedPraises.pop();
+    }
+
     function shuffle(array) {
       return [...array].sort(() => Math.random() - 0.5);
     }
@@ -306,13 +637,7 @@
 
     function createQuestion() {
       const element = randomElement();
-
-      const questionTypes = [
-        "symbolToName",
-        "nameToSymbol",
-        "atomicNumber"
-      ];
-
+      const questionTypes = ["symbolToName", "nameToSymbol", "atomicNumber"];
       const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
       let questionText = "";
@@ -324,53 +649,35 @@
         questionText = `สัญลักษณ์ "${element.symbol}" คือธาตุอะไร?`;
         correctAnswer = element.th;
         displaySymbol = element.symbol;
-
-        choices = elements
-          .filter(e => e.th !== correctAnswer)
-          .map(e => e.th);
-
+        choices = elements.filter(e => e.th !== correctAnswer).map(e => e.th);
       } else if (type === "nameToSymbol") {
         questionText = `ธาตุ "${element.th}" ใช้สัญลักษณ์ใด?`;
         correctAnswer = element.symbol;
         displaySymbol = "?";
-
-        choices = elements
-          .filter(e => e.symbol !== correctAnswer)
-          .map(e => e.symbol);
-
+        choices = elements.filter(e => e.symbol !== correctAnswer).map(e => e.symbol);
       } else if (type === "atomicNumber") {
         questionText = `เลขอะตอมของ "${element.th}" คือข้อใด?`;
         correctAnswer = String(element.no);
         displaySymbol = "?";
-
-        choices = elements
-          .filter(e => e.no !== element.no)
-          .map(e => String(e.no));
+        choices = elements.filter(e => e.no !== element.no).map(e => String(e.no));
       }
 
       choices = shuffle(choices).slice(0, 3);
       choices.push(correctAnswer);
       choices = shuffle(choices);
 
-      return {
-        element: element,
-        type: type,
-        questionText: questionText,
-        correctAnswer: correctAnswer,
-        displaySymbol: displaySymbol,
-        choices: choices
-      };
+      return { element, type, questionText, correctAnswer, displaySymbol, choices };
     }
 
     function showQuestion() {
       answered = false;
       currentQuestion = createQuestion();
 
-      document.getElementById("round").textContent = round;
+      document.getElementById("round").textContent = `${round}/${totalQuestions}`;
       document.getElementById("score").textContent = score;
       document.getElementById("symbolBox").textContent = currentQuestion.displaySymbol;
       document.getElementById("questionText").textContent = currentQuestion.questionText;
-      document.getElementById("resultText").textContent = "";
+      document.getElementById("resultText").innerHTML = "";
       document.getElementById("nextBtn").style.display = "none";
 
       const choicesBox = document.getElementById("choicesBox");
@@ -379,7 +686,7 @@
       currentQuestion.choices.forEach(choice => {
         const button = document.createElement("button");
         button.textContent = choice;
-        button.onclick = function () {
+        button.onclick = function() {
           checkAnswer(button, choice);
         };
         choicesBox.appendChild(button);
@@ -388,14 +695,11 @@
 
     function checkAnswer(button, selectedAnswer) {
       if (answered) return;
-
       answered = true;
 
       const allButtons = document.querySelectorAll(".choices button");
-
       allButtons.forEach(btn => {
         btn.disabled = true;
-
         if (btn.textContent === currentQuestion.correctAnswer) {
           btn.classList.add("correct");
         }
@@ -404,11 +708,11 @@
       if (selectedAnswer === currentQuestion.correctAnswer) {
         score++;
         button.classList.add("correct");
-        document.getElementById("resultText").innerHTML = "✅ ถูกต้องครับ!";
+        document.getElementById("resultText").innerHTML = "✅ " + getRandomPraise();
       } else {
         button.classList.add("wrong");
         document.getElementById("resultText").innerHTML =
-          `❌ ยังไม่ถูกครับ<br>เฉลยคือ ${currentQuestion.correctAnswer}`;
+          `❌ ยังไม่ถูกนะ ลองใหม่ได้เสมอ<small>เฉลยคือ ${currentQuestion.correctAnswer}</small>`;
       }
 
       document.getElementById("score").textContent = score;
@@ -417,7 +721,6 @@
 
     function nextQuestion() {
       round++;
-
       if (round > totalQuestions) {
         endGame();
       } else {
@@ -433,30 +736,29 @@
       document.getElementById("restartBtn").style.display = "inline-block";
 
       let level = "";
-
       if (score >= 9) {
-        level = "สุดยอด! ระดับนักเคมี";
+        level = "สุดยอด! ความรู้เรื่องธาตุยอดเยี่ยมมาก";
       } else if (score >= 7) {
-        level = "เก่งมาก";
+        level = "เก่งมาก! เข้าใจเรื่องธาตุได้ดีเลย";
       } else if (score >= 5) {
-        level = "พื้นฐานดี";
+        level = "ทำได้ดีมาก ฝึกต่ออีกนิดจะยิ่งคล่อง";
       } else {
-        level = "ลองฝึกเพิ่มอีกนิด";
+        level = "เริ่มต้นได้ดี ลองเล่นอีกครั้งเพื่อทำคะแนนเพิ่มนะ";
       }
 
       document.getElementById("resultText").innerHTML =
-        `คุณได้ ${score}/${totalQuestions} คะแนน<br>${level}`;
+        `คุณได้ ${score}/${totalQuestions} คะแนน<small>${level}</small>`;
     }
 
     function restartGame() {
       score = 0;
       round = 1;
+      unusedPraises = shuffle(praiseSentences);
       document.getElementById("restartBtn").style.display = "none";
       showQuestion();
     }
 
     showQuestion();
   </script>
-
 </body>
 </html>
