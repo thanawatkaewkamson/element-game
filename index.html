@@ -360,6 +360,137 @@
       to { filter: hue-rotate(360deg); }
     }
 
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0;
+        align-items: flex-start;
+      }
+
+      .game-box {
+        width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        padding: 14px 14px 112px;
+      }
+
+      .hero {
+        margin-bottom: 10px;
+        gap: 10px;
+      }
+
+      .hero-top {
+        gap: 10px;
+      }
+
+      .hero-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        font-size: 26px;
+      }
+
+      .science-strip {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .science-card {
+        padding: 7px 5px;
+        border-radius: 15px;
+      }
+
+      .science-card .emoji {
+        font-size: 24px;
+        margin-bottom: 2px;
+      }
+
+      .science-card .label {
+        font-size: 12px;
+      }
+
+      .info {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .info div {
+        padding: 8px 5px;
+        border-radius: 15px;
+      }
+
+      .symbol-box {
+        width: 92px;
+        height: 92px;
+        margin: 10px auto 12px;
+        border-radius: 20px;
+        font-size: 42px;
+      }
+
+      .symbol-box::after {
+        font-size: 24px;
+        right: -10px;
+        top: -10px;
+      }
+
+      .question-wrap {
+        padding: 11px 12px;
+        margin-bottom: 10px;
+        border-radius: 18px;
+      }
+
+      .choices {
+        gap: 9px;
+      }
+
+      .choices button {
+        min-height: 48px;
+        padding: 10px 12px;
+        border-radius: 16px;
+      }
+
+      .result {
+        min-height: 0;
+        margin: 0;
+      }
+
+      .feedback-panel {
+        display: none;
+      }
+
+      .feedback-panel.show {
+        display: block;
+        position: fixed;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        z-index: 99;
+        padding: 10px 12px 12px;
+        border-radius: 22px;
+        background: rgba(8, 20, 58, 0.92);
+        border: 1px solid rgba(255,255,255,0.25);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.35), 0 0 20px rgba(0, 212, 255, 0.25);
+        backdrop-filter: blur(10px);
+      }
+
+      .feedback-panel .result {
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .feedback-panel .next-btn,
+      .feedback-panel .restart-btn {
+        margin-top: 8px;
+        min-height: 44px;
+        padding: 10px 22px;
+      }
+
+      .small-note,
+      .footer-badges {
+        display: none;
+      }
+    }
+
     @media (min-width: 720px) {
       .hero {
         gap: 16px;
@@ -406,6 +537,202 @@
         font-size: 40px;
       }
     }
+  
+    /* Compact mobile layout: reduce vertical gaps so feedback is visible more easily */
+    @media (max-width: 600px) {
+      .game-box {
+        padding: 10px 10px 92px !important;
+      }
+
+      .hero {
+        margin-bottom: 6px !important;
+        gap: 6px !important;
+      }
+
+      .hero-top {
+        gap: 8px !important;
+      }
+
+      .hero-icon {
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 14px !important;
+        font-size: 22px !important;
+      }
+
+      h1 {
+        font-size: clamp(21px, 5.2vw, 28px) !important;
+        line-height: 1.1 !important;
+      }
+
+      .subtitle {
+        font-size: 13px !important;
+        margin-top: 0 !important;
+      }
+
+      .science-strip {
+        gap: 6px !important;
+      }
+
+      .science-card {
+        padding: 5px 4px !important;
+        border-radius: 13px !important;
+      }
+
+      .science-card .emoji {
+        font-size: 21px !important;
+        margin-bottom: 0 !important;
+      }
+
+      .science-card .label {
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+      }
+
+      .info {
+        gap: 6px !important;
+        margin-bottom: 6px !important;
+      }
+
+      .info div {
+        padding: 6px 4px !important;
+        border-radius: 13px !important;
+        font-size: 12px !important;
+        line-height: 1.15 !important;
+      }
+
+      .info span {
+        margin-top: 2px !important;
+        font-size: 15px !important;
+      }
+
+      .symbol-box {
+        width: 76px !important;
+        height: 76px !important;
+        margin: 6px auto 8px !important;
+        border-radius: 17px !important;
+        font-size: 34px !important;
+        border-width: 3px !important;
+      }
+
+      .symbol-box::after {
+        font-size: 20px !important;
+        right: -8px !important;
+        top: -8px !important;
+      }
+
+      .question-wrap {
+        padding: 9px 10px !important;
+        margin-bottom: 7px !important;
+        border-radius: 16px !important;
+      }
+
+      .question {
+        font-size: clamp(16px, 4.3vw, 19px) !important;
+        line-height: 1.35 !important;
+      }
+
+      .choices {
+        gap: 7px !important;
+      }
+
+      .choices button {
+        min-height: 42px !important;
+        padding: 8px 10px !important;
+        border-radius: 14px !important;
+        font-size: clamp(15px, 4vw, 17px) !important;
+      }
+
+      .feedback-panel.show {
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 8px !important;
+        padding: 8px 10px 10px !important;
+        border-radius: 18px !important;
+      }
+
+      .feedback-panel .result {
+        font-size: 14px !important;
+        line-height: 1.3 !important;
+      }
+
+      .feedback-panel .next-btn,
+      .feedback-panel .restart-btn {
+        margin-top: 6px !important;
+        min-height: 40px !important;
+        padding: 8px 18px !important;
+        font-size: 15px !important;
+      }
+
+      .orbit.one,
+      .orbit.two {
+        opacity: 0.45;
+      }
+    }
+
+    @media (max-height: 720px) and (max-width: 600px) {
+      .science-strip {
+        display: none !important;
+      }
+
+      .game-box {
+        padding-bottom: 86px !important;
+      }
+
+      .symbol-box {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 32px !important;
+      }
+
+      .choices button {
+        min-height: 40px !important;
+      }
+    }
+
+  
+    /* Put answer feedback and next button directly under choices */
+    @media (max-width: 600px) {
+      .game-box {
+        padding-bottom: 12px !important;
+      }
+
+      .feedback-panel {
+        display: none;
+        margin-top: 8px;
+      }
+
+      .feedback-panel.show {
+        display: block !important;
+        position: static !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        z-index: auto !important;
+        padding: 9px 10px 10px !important;
+        border-radius: 18px !important;
+        background: rgba(255, 255, 255, 0.16) !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.18) !important;
+        backdrop-filter: blur(8px);
+      }
+
+      .feedback-panel .result {
+        font-size: 14px !important;
+        line-height: 1.35 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+      }
+
+      .feedback-panel .next-btn,
+      .feedback-panel .restart-btn {
+        margin-top: 7px !important;
+        min-height: 40px !important;
+        padding: 8px 18px !important;
+        font-size: 15px !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -452,16 +779,28 @@
 
       <div class="choices" id="choicesBox"></div>
 
-      <div class="result" id="resultText"></div>
+      <div class="feedback-panel" id="feedbackPanel">
+        <div class="result" id="resultText"></div>
 
-      <div class="controls">
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
-          ข้อต่อไป
-        </button>
+        <div class="controls">
+          <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+            ข้อต่อไป
+          </button>
 
-        <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
-          เล่นอีกครั้ง
-        </button>
+          <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
+            เล่นอีกครั้ง
+          </button>
+        </div>
+      </div>
+
+      <div class="small-note">
+        คำถามมีหลายแบบ เช่น ทายชื่อธาตุ ทายสัญลักษณ์ และทายเลขอะตอม เพื่อช่วยให้จดจำได้ง่ายขึ้น
+      </div>
+
+      <div class="footer-badges">
+        <div class="badge">⚛️ ตารางธาตุ 118 ธาตุ</div>
+        <div class="badge">📱 Responsive</div>
+        <div class="badge">🧠 ฝึกความจำและทักษะ</div>
       </div>
     </div>
   </div>
@@ -669,6 +1008,7 @@
       document.getElementById("questionText").textContent = currentQuestion.questionText;
       document.getElementById("resultText").innerHTML = "";
       document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("feedbackPanel").classList.remove("show");
 
       const choicesBox = document.getElementById("choicesBox");
       choicesBox.innerHTML = "";
@@ -706,6 +1046,7 @@
       }
 
       document.getElementById("score").textContent = score;
+      document.getElementById("feedbackPanel").classList.add("show");
       document.getElementById("nextBtn").style.display = "inline-block";
     }
 
@@ -723,6 +1064,7 @@
       document.getElementById("questionText").textContent = "จบเกมแล้ว!";
       document.getElementById("choicesBox").innerHTML = "";
       document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("feedbackPanel").classList.add("show");
       document.getElementById("restartBtn").style.display = "inline-block";
 
       let level = "";
@@ -745,6 +1087,7 @@
       round = 1;
       unusedPraises = shuffle(praiseSentences);
       document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("feedbackPanel").classList.remove("show");
       showQuestion();
     }
 
