@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เกมทายตารางธาตุ 118 ธาตุ</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .game-box {
+      width: 460px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin-top: -10px;
+      margin-bottom: 18px;
+      color: #dbeafe;
+      font-size: 14px;
+    }
+
+    .symbol-box {
+      background: white;
+      color: #0f172a;
+      width: 115px;
+      height: 115px;
+      margin: 20px auto;
+      border-radius: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 48px;
+      font-weight: bold;
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+
+    .choices button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      cursor: pointer;
+      background: #e0f2fe;
+      color: #0f172a;
+      transition: 0.2s;
+    }
+
+    .choices button:hover {
+      background: #bae6fd;
+      transform: scale(1.02);
+    }
+
+    .choices button:disabled {
+      cursor: default;
+      transform: none;
+    }
+
+    .correct {
+      background: #22c55e !important;
+      color: white !important;
+    }
+
+    .wrong {
+      background: #ef4444 !important;
+      color: white !important;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .info div {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 8px 10px;
+      border-radius: 12px;
+      flex: 1;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      min-height: 56px;
+      line-height: 1.5;
+    }
+
+    .next-btn, .restart-btn {
+      margin-top: 15px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #facc15;
+      color: #0f172a;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .next-btn:hover, .restart-btn:hover {
+      background: #fde047;
+    }
+
+    .small-note {
+      margin-top: 16px;
+      color: #c7d2fe;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-box">
+    <h1>🧪 เกมทายตารางธาตุ</h1>
+    <div class="subtitle">รวมธาตุครบ 118 ธาตุ</div>
+
+    <div class="info">
+      <div>ข้อ: <span id="round">1</span>/10</div>
+      <div>คะแนน: <span id="score">0</span></div>
+      <div>ทั้งหมด: 118</div>
+    </div>
+
+    <div class="symbol-box" id="symbolBox">?</div>
+
+    <div class="question" id="questionText"></div>
+
+    <div class="choices" id="choicesBox"></div>
+
+    <div class="result" id="resultText"></div>
+
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+      ข้อต่อไป
+    </button>
+
+    <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
+      เริ่มใหม่
+    </button>
+
+    <div class="small-note">
+      รูปแบบคำถาม: ทายชื่อธาตุ, ทายสัญลักษณ์, และทายเลขอะตอม
+    </div>
+  </div>
+
+  <script>
+    const elements = [
+      { no: 1, symbol: "H", th: "ไฮโดรเจน", en: "Hydrogen" },
+      { no: 2, symbol: "He", th: "ฮีเลียม", en: "Helium" },
+      { no: 3, symbol: "Li", th: "ลิเทียม", en: "Lithium" },
+      { no: 4, symbol: "Be", th: "เบริลเลียม", en: "Beryllium" },
+      { no: 5, symbol: "B", th: "โบรอน", en: "Boron" },
+      { no: 6, symbol: "C", th: "คาร์บอน", en: "Carbon" },
+      { no: 7, symbol: "N", th: "ไนโตรเจน", en: "Nitrogen" },
+      { no: 8, symbol: "O", th: "ออกซิเจน", en: "Oxygen" },
+      { no: 9, symbol: "F", th: "ฟลูออรีน", en: "Fluorine" },
+      { no: 10, symbol: "Ne", th: "นีออน", en: "Neon" },
+      { no: 11, symbol: "Na", th: "โซเดียม", en: "Sodium" },
+      { no: 12, symbol: "Mg", th: "แมกนีเซียม", en: "Magnesium" },
+      { no: 13, symbol: "Al", th: "อะลูมิเนียม", en: "Aluminium" },
+      { no: 14, symbol: "Si", th: "ซิลิคอน", en: "Silicon" },
+      { no: 15, symbol: "P", th: "ฟอสฟอรัส", en: "Phosphorus" },
+      { no: 16, symbol: "S", th: "กำมะถัน", en: "Sulfur" },
+      { no: 17, symbol: "Cl", th: "คลอรีน", en: "Chlorine" },
+      { no: 18, symbol: "Ar", th: "อาร์กอน", en: "Argon" },
+      { no: 19, symbol: "K", th: "โพแทสเซียม", en: "Potassium" },
+      { no: 20, symbol: "Ca", th: "แคลเซียม", en: "Calcium" },
+      { no: 21, symbol: "Sc", th: "สแกนเดียม", en: "Scandium" },
+      { no: 22, symbol: "Ti", th: "ไทเทเนียม", en: "Titanium" },
+      { no: 23, symbol: "V", th: "วาเนเดียม", en: "Vanadium" },
+      { no: 24, symbol: "Cr", th: "โครเมียม", en: "Chromium" },
+      { no: 25, symbol: "Mn", th: "แมงกานีส", en: "Manganese" },
+      { no: 26, symbol: "Fe", th: "เหล็ก", en: "Iron" },
+      { no: 27, symbol: "Co", th: "โคบอลต์", en: "Cobalt" },
+      { no: 28, symbol: "Ni", th: "นิกเกิล", en: "Nickel" },
+      { no: 29, symbol: "Cu", th: "ทองแดง", en: "Copper" },
+      { no: 30, symbol: "Zn", th: "สังกะสี", en: "Zinc" },
+      { no: 31, symbol: "Ga", th: "แกลเลียม", en: "Gallium" },
+      { no: 32, symbol: "Ge", th: "เจอร์เมเนียม", en: "Germanium" },
+      { no: 33, symbol: "As", th: "สารหนู", en: "Arsenic" },
+      { no: 34, symbol: "Se", th: "ซีลีเนียม", en: "Selenium" },
+      { no: 35, symbol: "Br", th: "โบรมีน", en: "Bromine" },
+      { no: 36, symbol: "Kr", th: "คริปทอน", en: "Krypton" },
+      { no: 37, symbol: "Rb", th: "รูบิเดียม", en: "Rubidium" },
+      { no: 38, symbol: "Sr", th: "สตรอนเชียม", en: "Strontium" },
+      { no: 39, symbol: "Y", th: "อิตเทรียม", en: "Yttrium" },
+      { no: 40, symbol: "Zr", th: "เซอร์โคเนียม", en: "Zirconium" },
+      { no: 41, symbol: "Nb", th: "ไนโอเบียม", en: "Niobium" },
+      { no: 42, symbol: "Mo", th: "โมลิบดีนัม", en: "Molybdenum" },
+      { no: 43, symbol: "Tc", th: "เทคนีเชียม", en: "Technetium" },
+      { no: 44, symbol: "Ru", th: "รูทีเนียม", en: "Ruthenium" },
+      { no: 45, symbol: "Rh", th: "โรเดียม", en: "Rhodium" },
+      { no: 46, symbol: "Pd", th: "แพลเลเดียม", en: "Palladium" },
+      { no: 47, symbol: "Ag", th: "เงิน", en: "Silver" },
+      { no: 48, symbol: "Cd", th: "แคดเมียม", en: "Cadmium" },
+      { no: 49, symbol: "In", th: "อินเดียม", en: "Indium" },
+      { no: 50, symbol: "Sn", th: "ดีบุก", en: "Tin" },
+      { no: 51, symbol: "Sb", th: "พลวง", en: "Antimony" },
+      { no: 52, symbol: "Te", th: "เทลลูเรียม", en: "Tellurium" },
+      { no: 53, symbol: "I", th: "ไอโอดีน", en: "Iodine" },
+      { no: 54, symbol: "Xe", th: "ซีนอน", en: "Xenon" },
+      { no: 55, symbol: "Cs", th: "ซีเซียม", en: "Caesium" },
+      { no: 56, symbol: "Ba", th: "แบเรียม", en: "Barium" },
+      { no: 57, symbol: "La", th: "แลนทานัม", en: "Lanthanum" },
+      { no: 58, symbol: "Ce", th: "ซีเรียม", en: "Cerium" },
+      { no: 59, symbol: "Pr", th: "เพรซีโอดิเมียม", en: "Praseodymium" },
+      { no: 60, symbol: "Nd", th: "นีโอดิเมียม", en: "Neodymium" },
+      { no: 61, symbol: "Pm", th: "โพรมีเทียม", en: "Promethium" },
+      { no: 62, symbol: "Sm", th: "ซาแมเรียม", en: "Samarium" },
+      { no: 63, symbol: "Eu", th: "ยูโรเพียม", en: "Europium" },
+      { no: 64, symbol: "Gd", th: "แกโดลิเนียม", en: "Gadolinium" },
+      { no: 65, symbol: "Tb", th: "เทอร์เบียม", en: "Terbium" },
+      { no: 66, symbol: "Dy", th: "ดิสโพรเซียม", en: "Dysprosium" },
+      { no: 67, symbol: "Ho", th: "โฮลเมียม", en: "Holmium" },
+      { no: 68, symbol: "Er", th: "เออร์เบียม", en: "Erbium" },
+      { no: 69, symbol: "Tm", th: "ทูเลียม", en: "Thulium" },
+      { no: 70, symbol: "Yb", th: "อิตเทอร์เบียม", en: "Ytterbium" },
+      { no: 71, symbol: "Lu", th: "ลูทีเทียม", en: "Lutetium" },
+      { no: 72, symbol: "Hf", th: "แฮฟเนียม", en: "Hafnium" },
+      { no: 73, symbol: "Ta", th: "แทนทาลัม", en: "Tantalum" },
+      { no: 74, symbol: "W", th: "ทังสเตน", en: "Tungsten" },
+      { no: 75, symbol: "Re", th: "รีเนียม", en: "Rhenium" },
+      { no: 76, symbol: "Os", th: "ออสเมียม", en: "Osmium" },
+      { no: 77, symbol: "Ir", th: "อิริเดียม", en: "Iridium" },
+      { no: 78, symbol: "Pt", th: "แพลทินัม", en: "Platinum" },
+      { no: 79, symbol: "Au", th: "ทองคำ", en: "Gold" },
+      { no: 80, symbol: "Hg", th: "ปรอท", en: "Mercury" },
+      { no: 81, symbol: "Tl", th: "แทลเลียม", en: "Thallium" },
+      { no: 82, symbol: "Pb", th: "ตะกั่ว", en: "Lead" },
+      { no: 83, symbol: "Bi", th: "บิสมัท", en: "Bismuth" },
+      { no: 84, symbol: "Po", th: "โพโลเนียม", en: "Polonium" },
+      { no: 85, symbol: "At", th: "แอสทาทีน", en: "Astatine" },
+      { no: 86, symbol: "Rn", th: "เรดอน", en: "Radon" },
+      { no: 87, symbol: "Fr", th: "แฟรนเซียม", en: "Francium" },
+      { no: 88, symbol: "Ra", th: "เรเดียม", en: "Radium" },
+      { no: 89, symbol: "Ac", th: "แอกทิเนียม", en: "Actinium" },
+      { no: 90, symbol: "Th", th: "ทอเรียม", en: "Thorium" },
+      { no: 91, symbol: "Pa", th: "โพรแทกทิเนียม", en: "Protactinium" },
+      { no: 92, symbol: "U", th: "ยูเรเนียม", en: "Uranium" },
+      { no: 93, symbol: "Np", th: "เนปทูเนียม", en: "Neptunium" },
+      { no: 94, symbol: "Pu", th: "พลูโทเนียม", en: "Plutonium" },
+      { no: 95, symbol: "Am", th: "อะเมริเซียม", en: "Americium" },
+      { no: 96, symbol: "Cm", th: "คูเรียม", en: "Curium" },
+      { no: 97, symbol: "Bk", th: "เบอร์คีเลียม", en: "Berkelium" },
+      { no: 98, symbol: "Cf", th: "แคลิฟอร์เนียม", en: "Californium" },
+      { no: 99, symbol: "Es", th: "ไอน์สไตเนียม", en: "Einsteinium" },
+      { no: 100, symbol: "Fm", th: "เฟอร์เมียม", en: "Fermium" },
+      { no: 101, symbol: "Md", th: "เมนเดลีเวียม", en: "Mendelevium" },
+      { no: 102, symbol: "No", th: "โนเบเลียม", en: "Nobelium" },
+      { no: 103, symbol: "Lr", th: "ลอว์เรนเซียม", en: "Lawrencium" },
+      { no: 104, symbol: "Rf", th: "รัทเทอร์ฟอร์เดียม", en: "Rutherfordium" },
+      { no: 105, symbol: "Db", th: "ดุบเนียม", en: "Dubnium" },
+      { no: 106, symbol: "Sg", th: "ซีบอร์เกียม", en: "Seaborgium" },
+      { no: 107, symbol: "Bh", th: "โบห์เรียม", en: "Bohrium" },
+      { no: 108, symbol: "Hs", th: "ฮัสเซียม", en: "Hassium" },
+      { no: 109, symbol: "Mt", th: "ไมต์เนเรียม", en: "Meitnerium" },
+      { no: 110, symbol: "Ds", th: "ดาร์มสแทดเทียม", en: "Darmstadtium" },
+      { no: 111, symbol: "Rg", th: "เรินต์เกเนียม", en: "Roentgenium" },
+      { no: 112, symbol: "Cn", th: "โคเปอร์นิเซียม", en: "Copernicium" },
+      { no: 113, symbol: "Nh", th: "นิโฮเนียม", en: "Nihonium" },
+      { no: 114, symbol: "Fl", th: "ฟลีโรเวียม", en: "Flerovium" },
+      { no: 115, symbol: "Mc", th: "มอสโกเวียม", en: "Moscovium" },
+      { no: 116, symbol: "Lv", th: "ลิเวอร์มอเรียม", en: "Livermorium" },
+      { no: 117, symbol: "Ts", th: "เทนเนสซีน", en: "Tennessine" },
+      { no: 118, symbol: "Og", th: "โอกาเนสซอน", en: "Oganesson" }
+    ];
+
+    let score = 0;
+    let round = 1;
+    const totalQuestions = 10;
+    let currentQuestion = null;
+    let answered = false;
+
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    function randomElement() {
+      return elements[Math.floor(Math.random() * elements.length)];
+    }
+
+    function createQuestion() {
+      const element = randomElement();
+
+      const questionTypes = [
+        "symbolToName",
+        "nameToSymbol",
+        "atomicNumber"
+      ];
+
+      const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+
+      let questionText = "";
+      let correctAnswer = "";
+      let displaySymbol = "?";
+      let choices = [];
+
+      if (type === "symbolToName") {
+        questionText = `สัญลักษณ์ "${element.symbol}" คือธาตุอะไร?`;
+        correctAnswer = element.th;
+        displaySymbol = element.symbol;
+
+        choices = elements
+          .filter(e => e.th !== correctAnswer)
+          .map(e => e.th);
+
+      } else if (type === "nameToSymbol") {
+        questionText = `ธาตุ "${element.th}" ใช้สัญลักษณ์ใด?`;
+        correctAnswer = element.symbol;
+        displaySymbol = "?";
+
+        choices = elements
+          .filter(e => e.symbol !== correctAnswer)
+          .map(e => e.symbol);
+
+      } else if (type === "atomicNumber") {
+        questionText = `เลขอะตอมของ "${element.th}" คือข้อใด?`;
+        correctAnswer = String(element.no);
+        displaySymbol = "?";
+
+        choices = elements
+          .filter(e => e.no !== element.no)
+          .map(e => String(e.no));
+      }
+
+      choices = shuffle(choices).slice(0, 3);
+      choices.push(correctAnswer);
+      choices = shuffle(choices);
+
+      return {
+        element: element,
+        type: type,
+        questionText: questionText,
+        correctAnswer: correctAnswer,
+        displaySymbol: displaySymbol,
+        choices: choices
+      };
+    }
+
+    function showQuestion() {
+      answered = false;
+      currentQuestion = createQuestion();
+
+      document.getElementById("round").textContent = round;
+      document.getElementById("score").textContent = score;
+      document.getElementById("symbolBox").textContent = currentQuestion.displaySymbol;
+      document.getElementById("questionText").textContent = currentQuestion.questionText;
+      document.getElementById("resultText").textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+
+      const choicesBox = document.getElementById("choicesBox");
+      choicesBox.innerHTML = "";
+
+      currentQuestion.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.textContent = choice;
+        button.onclick = function () {
+          checkAnswer(button, choice);
+        };
+        choicesBox.appendChild(button);
+      });
+    }
+
+    function checkAnswer(button, selectedAnswer) {
+      if (answered) return;
+
+      answered = true;
+
+      const allButtons = document.querySelectorAll(".choices button");
+
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+
+        if (btn.textContent === currentQuestion.correctAnswer) {
+          btn.classList.add("correct");
+        }
+      });
+
+      if (selectedAnswer === currentQuestion.correctAnswer) {
+        score++;
+        button.classList.add("correct");
+        document.getElementById("resultText").innerHTML = "✅ ถูกต้องครับ!";
+      } else {
+        button.classList.add("wrong");
+        document.getElementById("resultText").innerHTML =
+          `❌ ยังไม่ถูกครับ<br>เฉลยคือ ${currentQuestion.correctAnswer}`;
+      }
+
+      document.getElementById("score").textContent = score;
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      round++;
+
+      if (round > totalQuestions) {
+        endGame();
+      } else {
+        showQuestion();
+      }
+    }
+
+    function endGame() {
+      document.getElementById("symbolBox").textContent = "🏆";
+      document.getElementById("questionText").textContent = "จบเกมแล้ว!";
+      document.getElementById("choicesBox").innerHTML = "";
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("restartBtn").style.display = "inline-block";
+
+      let level = "";
+
+      if (score >= 9) {
+        level = "สุดยอด! ระดับนักเคมี";
+      } else if (score >= 7) {
+        level = "เก่งมาก";
+      } else if (score >= 5) {
+        level = "พื้นฐานดี";
+      } else {
+        level = "ลองฝึกเพิ่มอีกนิด";
+      }
+
+      document.getElementById("resultText").innerHTML =
+        `คุณได้ ${score}/${totalQuestions} คะแนน<br>${level}`;
+    }
+
+    function restartGame() {
+      score = 0;
+      round = 1;
+      document.getElementById("restartBtn").style.display = "none";
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
+
+</body>
+</html>
