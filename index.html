@@ -821,6 +821,11 @@
       text-underline-offset: 3px;
     }
 
+    .more-label {
+      font-size: 0.82em;
+      font-style: italic;
+    }
+
     @media (max-width: 600px) {
       .fact-box {
         margin-top: 8px;
@@ -1140,7 +1145,7 @@
     function showFact() {
       const wikiUrl = `https://th.wikipedia.org/wiki/${encodeURIComponent(currentQuestion.element.th)}`;
       document.getElementById("factText").innerHTML =
-        `<strong>เกร็ดความรู้:</strong> <b>${currentQuestion.element.en} (${currentQuestion.element.symbol}, ${currentQuestion.element.no})</b>: ${currentQuestion.element.fact} <a href="${wikiUrl}" target="_blank" rel="noopener noreferrer">Wikipedia</a>`;
+        `<strong>เกร็ดความรู้:</strong> <b>${currentQuestion.element.en} (${currentQuestion.element.symbol}, ${currentQuestion.element.no})</b>: ${currentQuestion.element.fact} <span class="more-label">ดูเพิ่มเติม:</span> <a href="${wikiUrl}" target="_blank" rel="noopener noreferrer">Wikipedia</a>`;
       document.getElementById("factText").classList.add("show");
     }
 
