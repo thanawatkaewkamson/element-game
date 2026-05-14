@@ -210,31 +210,6 @@
       margin-top: 2px;
     }
 
-    .science-strip {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .science-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.10));
-      border: 1px solid rgba(255,255,255,0.26);
-      border-radius: 18px;
-      padding: 10px 8px;
-      text-align: center;
-    }
-
-    .science-card .emoji {
-      display: block;
-      font-size: clamp(24px, 6vw, 30px);
-      margin-bottom: 4px;
-    }
-
-    .science-card .label {
-      font-size: clamp(12px, 3.2vw, 13px);
-      color: #f6fbff;
-    }
-
     .info {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -509,25 +484,6 @@
         font-size: 26px;
       }
 
-      .science-strip {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-      }
-
-      .science-card {
-        padding: 7px 5px;
-        border-radius: 15px;
-      }
-
-      .science-card .emoji {
-        font-size: 24px;
-        margin-bottom: 2px;
-      }
-
-      .science-card .label {
-        font-size: 12px;
-      }
-
       .info {
         gap: 8px;
         margin-bottom: 10px;
@@ -635,7 +591,6 @@
         padding: 14px;
       }
 
-      .science-strip,
       .info {
         gap: 8px;
       }
@@ -648,10 +603,6 @@
     @media (max-height: 720px) and (orientation: landscape) {
       body {
         align-items: flex-start;
-      }
-
-      .science-strip {
-        display: none;
       }
 
       .symbol-box {
@@ -691,25 +642,6 @@
       .subtitle {
         font-size: 13px !important;
         margin-top: 0 !important;
-      }
-
-      .science-strip {
-        gap: 6px !important;
-      }
-
-      .science-card {
-        padding: 5px 4px !important;
-        border-radius: 13px !important;
-      }
-
-      .science-card .emoji {
-        font-size: 21px !important;
-        margin-bottom: 0 !important;
-      }
-
-      .science-card .label {
-        font-size: 11px !important;
-        line-height: 1.2 !important;
       }
 
       .info {
@@ -798,10 +730,6 @@
     }
 
     @media (max-height: 720px) and (max-width: 600px) {
-      .science-strip {
-        display: none !important;
-      }
-
       .game-box {
         padding-bottom: 86px !important;
       }
@@ -912,20 +840,6 @@
           </div>
         </div>
 
-        <div class="science-strip">
-          <div class="science-card">
-            <span class="emoji">⚛️</span>
-            <span class="label">โลกของอะตอม</span>
-          </div>
-          <div class="science-card">
-            <span class="emoji">🧪</span>
-            <span class="label">คิดแล้วตอบ</span>
-          </div>
-          <div class="science-card">
-            <span class="emoji">🚀</span>
-            <span class="label">สะสมคะแนน</span>
-          </div>
-        </div>
       </div>
 
       <div class="start-panel" id="startPanel">
