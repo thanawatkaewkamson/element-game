@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periodic Table</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Trebuchet MS", Tahoma, sans-serif;
+      color: #f8fbff;
+      background:
+        radial-gradient(circle at 16% 18%, rgba(0, 255, 209, 0.35) 0 5px, transparent 6px),
+        radial-gradient(circle at 82% 20%, rgba(255, 217, 77, 0.38) 0 6px, transparent 7px),
+        radial-gradient(circle at 76% 78%, rgba(255, 79, 179, 0.32) 0 5px, transparent 6px),
+        linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px),
+        linear-gradient(145deg, #06112f, #102d7d 48%, #008ec9);
+      background-size: auto, auto, auto, 42px 42px, 42px 42px, auto;
+      padding: 18px;
+    }
+
+    .wrap {
+      width: min(100%, 1280px);
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.1;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+
+    .home-link {
+      color: #102047;
+      background: linear-gradient(180deg, #fff14d, #ffb000);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 10px 18px rgba(255,176,0,0.28);
+    }
+
+    .table-shell {
+      overflow-x: auto;
+      padding: 14px;
+      border-radius: 22px;
+      background:
+        linear-gradient(120deg, transparent 0 46%, rgba(255,255,255,0.10) 46% 47%, transparent 47%),
+        linear-gradient(180deg, rgba(255,255,255,0.18), rgba(8,20,58,0.32)),
+        rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.24);
+      box-shadow: 0 22px 48px rgba(0,0,0,0.28), 0 0 34px rgba(0,212,255,0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .periodic-table {
+      min-width: 1120px;
+      display: grid;
+      grid-template-columns: repeat(18, 1fr);
+      gap: 6px;
+    }
+
+    .element {
+      min-height: 72px;
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 8px;
+      padding: 6px;
+      color: #102047;
+      background: linear-gradient(180deg, #ffffff, #c9f4ff);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .no {
+      font-size: 11px;
+      font-weight: 800;
+      opacity: 0.75;
+    }
+
+    .symbol {
+      align-self: center;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .name {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nonmetal { background: linear-gradient(180deg, #ffffff, #baf7df); }
+    .noble { background: linear-gradient(180deg, #ffffff, #cbbdff); }
+    .alkali { background: linear-gradient(180deg, #ffffff, #ffcf9a); }
+    .alkaline { background: linear-gradient(180deg, #ffffff, #ffe58c); }
+    .metalloid { background: linear-gradient(180deg, #ffffff, #9eeadf); }
+    .halogen { background: linear-gradient(180deg, #ffffff, #ffb3d9); }
+    .transition { background: linear-gradient(180deg, #ffffff, #aad6ff); }
+    .post { background: linear-gradient(180deg, #ffffff, #d4e3ef); }
+    .lanthanide { background: linear-gradient(180deg, #ffffff, #ffc7a8); }
+    .actinide { background: linear-gradient(180deg, #ffffff, #ffb7b7); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      color: #eaf5ff;
+      font-size: 13px;
+    }
+
+    .legend span {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 10px;
+      }
+
+      .table-shell {
+        border-radius: 18px;
+        padding: 10px;
+      }
+
+      .periodic-table {
+        min-width: 980px;
+        gap: 5px;
+      }
+
+      .element {
+        min-height: 64px;
+        padding: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Periodic Table</h1>
+      <a class="home-link" href="index.html">Element Quest 118</a>
+    </header>
+
+    <div class="table-shell">
+      <div class="periodic-table" id="periodicTable"></div>
+    </div>
+
+    <div class="legend">
+      <span>Nonmetal</span>
+      <span>Noble gas</span>
+      <span>Alkali metal</span>
+      <span>Transition metal</span>
+      <span>Lanthanide / Actinide</span>
+    </div>
+  </div>
+
+  <script>
+    const elements = [
+      [1,"H","Hydrogen",1,1,"nonmetal"],[2,"He","Helium",1,18,"noble"],
+      [3,"Li","Lithium",2,1,"alkali"],[4,"Be","Beryllium",2,2,"alkaline"],[5,"B","Boron",2,13,"metalloid"],[6,"C","Carbon",2,14,"nonmetal"],[7,"N","Nitrogen",2,15,"nonmetal"],[8,"O","Oxygen",2,16,"nonmetal"],[9,"F","Fluorine",2,17,"halogen"],[10,"Ne","Neon",2,18,"noble"],
+      [11,"Na","Sodium",3,1,"alkali"],[12,"Mg","Magnesium",3,2,"alkaline"],[13,"Al","Aluminium",3,13,"post"],[14,"Si","Silicon",3,14,"metalloid"],[15,"P","Phosphorus",3,15,"nonmetal"],[16,"S","Sulfur",3,16,"nonmetal"],[17,"Cl","Chlorine",3,17,"halogen"],[18,"Ar","Argon",3,18,"noble"],
+      [19,"K","Potassium",4,1,"alkali"],[20,"Ca","Calcium",4,2,"alkaline"],[21,"Sc","Scandium",4,3,"transition"],[22,"Ti","Titanium",4,4,"transition"],[23,"V","Vanadium",4,5,"transition"],[24,"Cr","Chromium",4,6,"transition"],[25,"Mn","Manganese",4,7,"transition"],[26,"Fe","Iron",4,8,"transition"],[27,"Co","Cobalt",4,9,"transition"],[28,"Ni","Nickel",4,10,"transition"],[29,"Cu","Copper",4,11,"transition"],[30,"Zn","Zinc",4,12,"transition"],[31,"Ga","Gallium",4,13,"post"],[32,"Ge","Germanium",4,14,"metalloid"],[33,"As","Arsenic",4,15,"metalloid"],[34,"Se","Selenium",4,16,"nonmetal"],[35,"Br","Bromine",4,17,"halogen"],[36,"Kr","Krypton",4,18,"noble"],
+      [37,"Rb","Rubidium",5,1,"alkali"],[38,"Sr","Strontium",5,2,"alkaline"],[39,"Y","Yttrium",5,3,"transition"],[40,"Zr","Zirconium",5,4,"transition"],[41,"Nb","Niobium",5,5,"transition"],[42,"Mo","Molybdenum",5,6,"transition"],[43,"Tc","Technetium",5,7,"transition"],[44,"Ru","Ruthenium",5,8,"transition"],[45,"Rh","Rhodium",5,9,"transition"],[46,"Pd","Palladium",5,10,"transition"],[47,"Ag","Silver",5,11,"transition"],[48,"Cd","Cadmium",5,12,"transition"],[49,"In","Indium",5,13,"post"],[50,"Sn","Tin",5,14,"post"],[51,"Sb","Antimony",5,15,"metalloid"],[52,"Te","Tellurium",5,16,"metalloid"],[53,"I","Iodine",5,17,"halogen"],[54,"Xe","Xenon",5,18,"noble"],
+      [55,"Cs","Caesium",6,1,"alkali"],[56,"Ba","Barium",6,2,"alkaline"],[57,"La","Lanthanum",8,3,"lanthanide"],[58,"Ce","Cerium",8,4,"lanthanide"],[59,"Pr","Praseodymium",8,5,"lanthanide"],[60,"Nd","Neodymium",8,6,"lanthanide"],[61,"Pm","Promethium",8,7,"lanthanide"],[62,"Sm","Samarium",8,8,"lanthanide"],[63,"Eu","Europium",8,9,"lanthanide"],[64,"Gd","Gadolinium",8,10,"lanthanide"],[65,"Tb","Terbium",8,11,"lanthanide"],[66,"Dy","Dysprosium",8,12,"lanthanide"],[67,"Ho","Holmium",8,13,"lanthanide"],[68,"Er","Erbium",8,14,"lanthanide"],[69,"Tm","Thulium",8,15,"lanthanide"],[70,"Yb","Ytterbium",8,16,"lanthanide"],[71,"Lu","Lutetium",8,17,"lanthanide"],
+      [72,"Hf","Hafnium",6,4,"transition"],[73,"Ta","Tantalum",6,5,"transition"],[74,"W","Tungsten",6,6,"transition"],[75,"Re","Rhenium",6,7,"transition"],[76,"Os","Osmium",6,8,"transition"],[77,"Ir","Iridium",6,9,"transition"],[78,"Pt","Platinum",6,10,"transition"],[79,"Au","Gold",6,11,"transition"],[80,"Hg","Mercury",6,12,"transition"],[81,"Tl","Thallium",6,13,"post"],[82,"Pb","Lead",6,14,"post"],[83,"Bi","Bismuth",6,15,"post"],[84,"Po","Polonium",6,16,"post"],[85,"At","Astatine",6,17,"halogen"],[86,"Rn","Radon",6,18,"noble"],
+      [87,"Fr","Francium",7,1,"alkali"],[88,"Ra","Radium",7,2,"alkaline"],[89,"Ac","Actinium",9,3,"actinide"],[90,"Th","Thorium",9,4,"actinide"],[91,"Pa","Protactinium",9,5,"actinide"],[92,"U","Uranium",9,6,"actinide"],[93,"Np","Neptunium",9,7,"actinide"],[94,"Pu","Plutonium",9,8,"actinide"],[95,"Am","Americium",9,9,"actinide"],[96,"Cm","Curium",9,10,"actinide"],[97,"Bk","Berkelium",9,11,"actinide"],[98,"Cf","Californium",9,12,"actinide"],[99,"Es","Einsteinium",9,13,"actinide"],[100,"Fm","Fermium",9,14,"actinide"],[101,"Md","Mendelevium",9,15,"actinide"],[102,"No","Nobelium",9,16,"actinide"],[103,"Lr","Lawrencium",9,17,"actinide"],
+      [104,"Rf","Rutherfordium",7,4,"transition"],[105,"Db","Dubnium",7,5,"transition"],[106,"Sg","Seaborgium",7,6,"transition"],[107,"Bh","Bohrium",7,7,"transition"],[108,"Hs","Hassium",7,8,"transition"],[109,"Mt","Meitnerium",7,9,"transition"],[110,"Ds","Darmstadtium",7,10,"transition"],[111,"Rg","Roentgenium",7,11,"transition"],[112,"Cn","Copernicium",7,12,"transition"],[113,"Nh","Nihonium",7,13,"post"],[114,"Fl","Flerovium",7,14,"post"],[115,"Mc","Moscovium",7,15,"post"],[116,"Lv","Livermorium",7,16,"post"],[117,"Ts","Tennessine",7,17,"halogen"],[118,"Og","Oganesson",7,18,"noble"]
+    ];
+
+    const table = document.getElementById("periodicTable");
+
+    elements.forEach(([no, symbol, name, row, col, type]) => {
+      const item = document.createElement("div");
+      item.className = `element ${type}`;
+      item.style.gridRow = row;
+      item.style.gridColumn = col;
+      item.title = `${name} (${symbol}), atomic number ${no}`;
+      item.innerHTML = `
+        <div class="no">${no}</div>
+        <div class="symbol">${symbol}</div>
+        <div class="name">${name}</div>
+      `;
+      table.appendChild(item);
+    });
+  </script>
+</body>
+</html>

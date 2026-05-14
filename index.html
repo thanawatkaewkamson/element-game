@@ -130,6 +130,36 @@
       overflow: hidden;
     }
 
+    .fireworks-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .firework {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--spark-color, #fff14d);
+      box-shadow: 0 0 12px var(--spark-color, #fff14d);
+      animation: firework-burst 760ms ease-out forwards;
+    }
+
+    @keyframes firework-burst {
+      from {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+
+      to {
+        transform: translate(var(--spark-x), var(--spark-y)) scale(0.25);
+        opacity: 0;
+      }
+    }
+
     .game-box::before,
     .game-box::after {
       content: "";
@@ -175,6 +205,28 @@
       gap: 14px;
       margin-bottom: 18px;
       text-align: center;
+    }
+
+    .table-link {
+      justify-self: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffffff, #c9f4ff);
+      color: var(--text-dark);
+      font-size: clamp(14px, 3.8vw, 16px);
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 8px 16px rgba(14, 60, 120, 0.14);
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    .table-link:hover {
+      filter: brightness(1.04);
+      transform: translateY(-1px);
     }
 
     .hero-top {
@@ -473,6 +525,11 @@
         gap: 10px;
       }
 
+      .table-link {
+        min-height: 36px;
+        padding: 8px 14px;
+      }
+
       .hero-top {
         gap: 10px;
       }
@@ -621,6 +678,12 @@
       .hero {
         margin-bottom: 6px !important;
         gap: 6px !important;
+      }
+
+      .table-link {
+        min-height: 34px !important;
+        padding: 7px 12px !important;
+        font-size: 13px !important;
       }
 
       .hero-top {
@@ -840,6 +903,7 @@
 </head>
 <body>
   <div class="game-box">
+    <div class="fireworks-layer" id="fireworksLayer"></div>
     <div class="orbit one"></div>
     <div class="orbit two"></div>
     <div class="content">
@@ -850,6 +914,7 @@
             <h1>Element Quest 118</h1>
           </div>
         </div>
+        <a class="table-link" href="table.html">ตารางธาตุ</a>
 
       </div>
 
@@ -1023,6 +1088,7 @@
     let timeLeft = secondsPerQuestion;
     let timerId = null;
     let audioContext = null;
+    let fireworksIntervalId = null;
 
     const praiseSentences = [
       "ยอดเยี่ยมมาก! ตอบได้แม่นมาก",
@@ -1214,6 +1280,44 @@
       document.getElementById("factText").classList.add("show");
     }
 
+    function createFirework() {
+      const layer = document.getElementById("fireworksLayer");
+      const colors = ["#fff14d", "#ff4fb3", "#00ffd1", "#4da3ff", "#ffffff"];
+      const centerX = 18 + Math.random() * 64;
+      const centerY = 12 + Math.random() * 46;
+      const sparks = 22;
+
+      for (let i = 0; i < sparks; i++) {
+        const spark = document.createElement("span");
+        const angle = (Math.PI * 2 * i) / sparks;
+        const distance = 48 + Math.random() * 64;
+
+        spark.className = "firework";
+        spark.style.left = `${centerX}%`;
+        spark.style.top = `${centerY}%`;
+        spark.style.setProperty("--spark-x", `${Math.cos(angle) * distance}px`);
+        spark.style.setProperty("--spark-y", `${Math.sin(angle) * distance}px`);
+        spark.style.setProperty("--spark-color", colors[Math.floor(Math.random() * colors.length)]);
+        layer.appendChild(spark);
+
+        spark.addEventListener("animationend", () => spark.remove());
+      }
+    }
+
+    function stopFireworks() {
+      if (fireworksIntervalId) {
+        clearInterval(fireworksIntervalId);
+        fireworksIntervalId = null;
+      }
+    }
+
+    function startFireworks() {
+      stopFireworks();
+      createFirework();
+      fireworksIntervalId = setInterval(createFirework, 420);
+      setTimeout(stopFireworks, 5000);
+    }
+
     function handleTimeUp() {
       if (answered) return;
       answered = true;
@@ -1315,6 +1419,7 @@
 
     function endGame() {
       stopTimer();
+      stopFireworks();
       document.getElementById("timer").textContent = "0";
       document.getElementById("symbolBox").textContent = "🏆";
       document.getElementById("questionText").textContent = "จบเกมแล้ว!";
@@ -1338,10 +1443,15 @@
 
       document.getElementById("resultText").innerHTML =
         `คุณได้ ${score}/${totalQuestions} คะแนน<small>${level}</small>`;
+
+      if (score === totalQuestions) {
+        startFireworks();
+      }
     }
 
     function restartGame() {
       initAudio();
+      stopFireworks();
       score = 0;
       round = 1;
       unusedPraises = shuffle(praiseSentences);
