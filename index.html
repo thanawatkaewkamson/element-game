@@ -378,6 +378,13 @@
       text-align: center;
     }
 
+    .start-panel {
+      display: grid;
+      place-items: center;
+      min-height: 250px;
+      text-align: center;
+    }
+
     .next-btn, .restart-btn {
       margin-top: 10px;
       padding: 13px 24px;
@@ -393,11 +400,25 @@
       box-shadow: 0 12px 20px rgba(255, 176, 0, 0.35), 0 0 18px rgba(255, 241, 77, 0.30);
     }
 
+    .play-btn {
+      min-width: 190px;
+      min-height: 60px;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 30px;
+      background: linear-gradient(180deg, #ffb3d9, #ff4fb3);
+      color: #ffffff;
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 14px 26px rgba(255, 79, 179, 0.36), 0 0 22px rgba(255, 179, 217, 0.34);
+    }
+
     .next-btn {
       margin-top: 2px;
     }
 
-    .next-btn:hover, .restart-btn:hover {
+    .next-btn:hover, .restart-btn:hover, .play-btn:hover {
       filter: brightness(1.03);
       transform: translateY(-1px);
     }
@@ -907,35 +928,41 @@
         </div>
       </div>
 
-      <div class="info">
-        <div>ข้อ<span id="round">1/10</span></div>
-        <div>คะแนน<span id="score">0</span></div>
-        <div class="timer-info">⏰<span id="timer">10</span></div>
-        <div>ธาตุทั้งหมด<span>118</span></div>
+      <div class="start-panel" id="startPanel">
+        <button class="play-btn" onclick="startGame()">Play</button>
       </div>
 
-      <div class="symbol-box" id="symbolBox">?</div>
-
-      <div class="question-wrap">
-        <p class="question" id="questionText"></p>
-      </div>
-
-      <div class="choices" id="choicesBox"></div>
-
-      <div class="feedback-panel" id="feedbackPanel">
-        <div class="result" id="resultText"></div>
-
-        <div class="controls">
-          <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
-            ข้อต่อไป
-          </button>
-
-          <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
-            เล่นอีกครั้ง
-          </button>
+      <div id="gameArea" style="display:none;">
+        <div class="info">
+          <div>ข้อ<span id="round">1/10</span></div>
+          <div>คะแนน<span id="score">0</span></div>
+          <div class="timer-info">⏰<span id="timer">10</span></div>
+          <div>ธาตุทั้งหมด<span>118</span></div>
         </div>
 
-        <div class="fact-box" id="factText"></div>
+        <div class="symbol-box" id="symbolBox">?</div>
+
+        <div class="question-wrap">
+          <p class="question" id="questionText"></p>
+        </div>
+
+        <div class="choices" id="choicesBox"></div>
+
+        <div class="feedback-panel" id="feedbackPanel">
+          <div class="result" id="resultText"></div>
+
+          <div class="controls">
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+              ข้อต่อไป
+            </button>
+
+            <button class="restart-btn" id="restartBtn" onclick="restartGame()" style="display:none;">
+              เล่นอีกครั้ง
+            </button>
+          </div>
+
+          <div class="fact-box" id="factText"></div>
+        </div>
       </div>
 
     </div>
@@ -1115,6 +1142,7 @@
     }
 
     function playTick() {
+      initAudio();
       if (!audioContext || audioContext.state !== "running") return;
 
       const oscillator = audioContext.createOscillator();
@@ -1245,6 +1273,17 @@
       startTimer();
     }
 
+    function startGame() {
+      initAudio();
+      score = 0;
+      round = 1;
+      unusedPraises = shuffle(praiseSentences);
+      document.getElementById("startPanel").style.display = "none";
+      document.getElementById("gameArea").style.display = "block";
+      document.getElementById("restartBtn").style.display = "none";
+      showQuestion();
+    }
+
     function checkAnswer(button, selectedAnswer) {
       if (answered) return;
       answered = true;
@@ -1323,7 +1362,6 @@
     }
 
     document.addEventListener("pointerdown", initAudio, { once: true });
-    showQuestion();
   </script>
 </body>
 </html>
