@@ -733,6 +733,38 @@
       }
     }
 
+
+    .fact-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #f8fbff;
+      font-size: 14px;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .fact-box.show {
+      display: block;
+    }
+
+    .fact-box strong {
+      color: #fff14d;
+    }
+
+    @media (max-width: 600px) {
+      .fact-box {
+        margin-top: 8px;
+        padding: 8px 10px;
+        border-radius: 14px;
+        font-size: 13px;
+        line-height: 1.35;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -791,6 +823,8 @@
             เล่นอีกครั้ง
           </button>
         </div>
+
+        <div class="fact-box" id="factText"></div>
       </div>
 
       <div class="small-note">
@@ -807,124 +841,124 @@
 
   <script>
     const elements = [
-      { no: 1, symbol: "H", th: "ไฮโดรเจน", en: "Hydrogen" },
-      { no: 2, symbol: "He", th: "ฮีเลียม", en: "Helium" },
-      { no: 3, symbol: "Li", th: "ลิเทียม", en: "Lithium" },
-      { no: 4, symbol: "Be", th: "เบริลเลียม", en: "Beryllium" },
-      { no: 5, symbol: "B", th: "โบรอน", en: "Boron" },
-      { no: 6, symbol: "C", th: "คาร์บอน", en: "Carbon" },
-      { no: 7, symbol: "N", th: "ไนโตรเจน", en: "Nitrogen" },
-      { no: 8, symbol: "O", th: "ออกซิเจน", en: "Oxygen" },
-      { no: 9, symbol: "F", th: "ฟลูออรีน", en: "Fluorine" },
-      { no: 10, symbol: "Ne", th: "นีออน", en: "Neon" },
-      { no: 11, symbol: "Na", th: "โซเดียม", en: "Sodium" },
-      { no: 12, symbol: "Mg", th: "แมกนีเซียม", en: "Magnesium" },
-      { no: 13, symbol: "Al", th: "อะลูมิเนียม", en: "Aluminium" },
-      { no: 14, symbol: "Si", th: "ซิลิคอน", en: "Silicon" },
-      { no: 15, symbol: "P", th: "ฟอสฟอรัส", en: "Phosphorus" },
-      { no: 16, symbol: "S", th: "กำมะถัน", en: "Sulfur" },
-      { no: 17, symbol: "Cl", th: "คลอรีน", en: "Chlorine" },
-      { no: 18, symbol: "Ar", th: "อาร์กอน", en: "Argon" },
-      { no: 19, symbol: "K", th: "โพแทสเซียม", en: "Potassium" },
-      { no: 20, symbol: "Ca", th: "แคลเซียม", en: "Calcium" },
-      { no: 21, symbol: "Sc", th: "สแกนเดียม", en: "Scandium" },
-      { no: 22, symbol: "Ti", th: "ไทเทเนียม", en: "Titanium" },
-      { no: 23, symbol: "V", th: "วาเนเดียม", en: "Vanadium" },
-      { no: 24, symbol: "Cr", th: "โครเมียม", en: "Chromium" },
-      { no: 25, symbol: "Mn", th: "แมงกานีส", en: "Manganese" },
-      { no: 26, symbol: "Fe", th: "เหล็ก", en: "Iron" },
-      { no: 27, symbol: "Co", th: "โคบอลต์", en: "Cobalt" },
-      { no: 28, symbol: "Ni", th: "นิกเกิล", en: "Nickel" },
-      { no: 29, symbol: "Cu", th: "ทองแดง", en: "Copper" },
-      { no: 30, symbol: "Zn", th: "สังกะสี", en: "Zinc" },
-      { no: 31, symbol: "Ga", th: "แกลเลียม", en: "Gallium" },
-      { no: 32, symbol: "Ge", th: "เจอร์เมเนียม", en: "Germanium" },
-      { no: 33, symbol: "As", th: "สารหนู", en: "Arsenic" },
-      { no: 34, symbol: "Se", th: "ซีลีเนียม", en: "Selenium" },
-      { no: 35, symbol: "Br", th: "โบรมีน", en: "Bromine" },
-      { no: 36, symbol: "Kr", th: "คริปทอน", en: "Krypton" },
-      { no: 37, symbol: "Rb", th: "รูบิเดียม", en: "Rubidium" },
-      { no: 38, symbol: "Sr", th: "สตรอนเชียม", en: "Strontium" },
-      { no: 39, symbol: "Y", th: "อิตเทรียม", en: "Yttrium" },
-      { no: 40, symbol: "Zr", th: "เซอร์โคเนียม", en: "Zirconium" },
-      { no: 41, symbol: "Nb", th: "ไนโอเบียม", en: "Niobium" },
-      { no: 42, symbol: "Mo", th: "โมลิบดีนัม", en: "Molybdenum" },
-      { no: 43, symbol: "Tc", th: "เทคนีเชียม", en: "Technetium" },
-      { no: 44, symbol: "Ru", th: "รูทีเนียม", en: "Ruthenium" },
-      { no: 45, symbol: "Rh", th: "โรเดียม", en: "Rhodium" },
-      { no: 46, symbol: "Pd", th: "แพลเลเดียม", en: "Palladium" },
-      { no: 47, symbol: "Ag", th: "เงิน", en: "Silver" },
-      { no: 48, symbol: "Cd", th: "แคดเมียม", en: "Cadmium" },
-      { no: 49, symbol: "In", th: "อินเดียม", en: "Indium" },
-      { no: 50, symbol: "Sn", th: "ดีบุก", en: "Tin" },
-      { no: 51, symbol: "Sb", th: "พลวง", en: "Antimony" },
-      { no: 52, symbol: "Te", th: "เทลลูเรียม", en: "Tellurium" },
-      { no: 53, symbol: "I", th: "ไอโอดีน", en: "Iodine" },
-      { no: 54, symbol: "Xe", th: "ซีนอน", en: "Xenon" },
-      { no: 55, symbol: "Cs", th: "ซีเซียม", en: "Caesium" },
-      { no: 56, symbol: "Ba", th: "แบเรียม", en: "Barium" },
-      { no: 57, symbol: "La", th: "แลนทานัม", en: "Lanthanum" },
-      { no: 58, symbol: "Ce", th: "ซีเรียม", en: "Cerium" },
-      { no: 59, symbol: "Pr", th: "เพรซีโอดิเมียม", en: "Praseodymium" },
-      { no: 60, symbol: "Nd", th: "นีโอดิเมียม", en: "Neodymium" },
-      { no: 61, symbol: "Pm", th: "โพรมีเทียม", en: "Promethium" },
-      { no: 62, symbol: "Sm", th: "ซาแมเรียม", en: "Samarium" },
-      { no: 63, symbol: "Eu", th: "ยูโรเพียม", en: "Europium" },
-      { no: 64, symbol: "Gd", th: "แกโดลิเนียม", en: "Gadolinium" },
-      { no: 65, symbol: "Tb", th: "เทอร์เบียม", en: "Terbium" },
-      { no: 66, symbol: "Dy", th: "ดิสโพรเซียม", en: "Dysprosium" },
-      { no: 67, symbol: "Ho", th: "โฮลเมียม", en: "Holmium" },
-      { no: 68, symbol: "Er", th: "เออร์เบียม", en: "Erbium" },
-      { no: 69, symbol: "Tm", th: "ทูเลียม", en: "Thulium" },
-      { no: 70, symbol: "Yb", th: "อิตเทอร์เบียม", en: "Ytterbium" },
-      { no: 71, symbol: "Lu", th: "ลูทีเทียม", en: "Lutetium" },
-      { no: 72, symbol: "Hf", th: "แฮฟเนียม", en: "Hafnium" },
-      { no: 73, symbol: "Ta", th: "แทนทาลัม", en: "Tantalum" },
-      { no: 74, symbol: "W", th: "ทังสเตน", en: "Tungsten" },
-      { no: 75, symbol: "Re", th: "รีเนียม", en: "Rhenium" },
-      { no: 76, symbol: "Os", th: "ออสเมียม", en: "Osmium" },
-      { no: 77, symbol: "Ir", th: "อิริเดียม", en: "Iridium" },
-      { no: 78, symbol: "Pt", th: "แพลทินัม", en: "Platinum" },
-      { no: 79, symbol: "Au", th: "ทองคำ", en: "Gold" },
-      { no: 80, symbol: "Hg", th: "ปรอท", en: "Mercury" },
-      { no: 81, symbol: "Tl", th: "แทลเลียม", en: "Thallium" },
-      { no: 82, symbol: "Pb", th: "ตะกั่ว", en: "Lead" },
-      { no: 83, symbol: "Bi", th: "บิสมัท", en: "Bismuth" },
-      { no: 84, symbol: "Po", th: "โพโลเนียม", en: "Polonium" },
-      { no: 85, symbol: "At", th: "แอสทาทีน", en: "Astatine" },
-      { no: 86, symbol: "Rn", th: "เรดอน", en: "Radon" },
-      { no: 87, symbol: "Fr", th: "แฟรนเซียม", en: "Francium" },
-      { no: 88, symbol: "Ra", th: "เรเดียม", en: "Radium" },
-      { no: 89, symbol: "Ac", th: "แอกทิเนียม", en: "Actinium" },
-      { no: 90, symbol: "Th", th: "ทอเรียม", en: "Thorium" },
-      { no: 91, symbol: "Pa", th: "โพรแทกทิเนียม", en: "Protactinium" },
-      { no: 92, symbol: "U", th: "ยูเรเนียม", en: "Uranium" },
-      { no: 93, symbol: "Np", th: "เนปทูเนียม", en: "Neptunium" },
-      { no: 94, symbol: "Pu", th: "พลูโทเนียม", en: "Plutonium" },
-      { no: 95, symbol: "Am", th: "อะเมริเซียม", en: "Americium" },
-      { no: 96, symbol: "Cm", th: "คูเรียม", en: "Curium" },
-      { no: 97, symbol: "Bk", th: "เบอร์คีเลียม", en: "Berkelium" },
-      { no: 98, symbol: "Cf", th: "แคลิฟอร์เนียม", en: "Californium" },
-      { no: 99, symbol: "Es", th: "ไอน์สไตเนียม", en: "Einsteinium" },
-      { no: 100, symbol: "Fm", th: "เฟอร์เมียม", en: "Fermium" },
-      { no: 101, symbol: "Md", th: "เมนเดลีเวียม", en: "Mendelevium" },
-      { no: 102, symbol: "No", th: "โนเบเลียม", en: "Nobelium" },
-      { no: 103, symbol: "Lr", th: "ลอว์เรนเซียม", en: "Lawrencium" },
-      { no: 104, symbol: "Rf", th: "รัทเทอร์ฟอร์เดียม", en: "Rutherfordium" },
-      { no: 105, symbol: "Db", th: "ดุบเนียม", en: "Dubnium" },
-      { no: 106, symbol: "Sg", th: "ซีบอร์เกียม", en: "Seaborgium" },
-      { no: 107, symbol: "Bh", th: "โบห์เรียม", en: "Bohrium" },
-      { no: 108, symbol: "Hs", th: "ฮัสเซียม", en: "Hassium" },
-      { no: 109, symbol: "Mt", th: "ไมต์เนเรียม", en: "Meitnerium" },
-      { no: 110, symbol: "Ds", th: "ดาร์มสแทดเทียม", en: "Darmstadtium" },
-      { no: 111, symbol: "Rg", th: "เรินต์เกเนียม", en: "Roentgenium" },
-      { no: 112, symbol: "Cn", th: "โคเปอร์นิเซียม", en: "Copernicium" },
-      { no: 113, symbol: "Nh", th: "นิโฮเนียม", en: "Nihonium" },
-      { no: 114, symbol: "Fl", th: "ฟลีโรเวียม", en: "Flerovium" },
-      { no: 115, symbol: "Mc", th: "มอสโกเวียม", en: "Moscovium" },
-      { no: 116, symbol: "Lv", th: "ลิเวอร์มอเรียม", en: "Livermorium" },
-      { no: 117, symbol: "Ts", th: "เทนเนสซีน", en: "Tennessine" },
-      { no: 118, symbol: "Og", th: "โอกาเนสซอน", en: "Oganesson" }
+      { no: 1, symbol: "H", th: "ไฮโดรเจน", en: "Hydrogen", fact: "เบาที่สุดและพบมากที่สุดในเอกภพ เป็นเชื้อเพลิงหลักของดาวฤกษ์และเป็นส่วนประกอบของน้ำ" },
+      { no: 2, symbol: "He", th: "ฮีเลียม", en: "Helium", fact: "แก๊สเฉื่อย น้ำหนักเบา ใช้เติมลูกโป่ง งานเชื่อม และระบบทำความเย็นอุณหภูมิต่ำมาก" },
+      { no: 3, symbol: "Li", th: "ลิเทียม", en: "Lithium", fact: "โลหะเบาที่ใช้มากในแบตเตอรี่ชาร์จซ้ำของโทรศัพท์ คอมพิวเตอร์ และรถไฟฟ้า" },
+      { no: 4, symbol: "Be", th: "เบริลเลียม", en: "Beryllium", fact: "เบาแต่แข็งแรง ใช้ในงานอวกาศและอุปกรณ์ที่ต้องการวัสดุทนทานน้ำหนักต่ำ" },
+      { no: 5, symbol: "B", th: "โบรอน", en: "Boron", fact: "ใช้ทำแก้วทนความร้อน ผงซักฟอก และวัสดุเสริมความแข็งแรง เช่น ไฟเบอร์กลาส" },
+      { no: 6, symbol: "C", th: "คาร์บอน", en: "Carbon", fact: "พื้นฐานของสิ่งมีชีวิต พบได้ทั้งในเพชร แกรไฟต์ ถ่าน และสารอินทรีย์" },
+      { no: 7, symbol: "N", th: "ไนโตรเจน", en: "Nitrogen", fact: "เป็นแก๊สหลักในอากาศ และเป็นส่วนสำคัญของโปรตีน ดีเอ็นเอ และปุ๋ย" },
+      { no: 8, symbol: "O", th: "ออกซิเจน", en: "Oxygen", fact: "จำเป็นต่อการหายใจของสิ่งมีชีวิตจำนวนมาก และเป็นส่วนประกอบของน้ำกับแร่หลายชนิด" },
+      { no: 9, symbol: "F", th: "ฟลูออรีน", en: "Fluorine", fact: "แฮโลเจนที่ว่องไวมาก สารฟลูออไรด์ใช้ในยาสีฟันเพื่อช่วยดูแลเคลือบฟัน" },
+      { no: 10, symbol: "Ne", th: "นีออน", en: "Neon", fact: "แก๊สเฉื่อยที่ให้แสงสีส้มแดงเมื่อใช้ในหลอดไฟป้ายโฆษณา" },
+      { no: 11, symbol: "Na", th: "โซเดียม", en: "Sodium", fact: "โลหะอ่อนที่ไวต่อน้ำ แต่เมื่อรวมกับคลอรีนจะเป็นเกลือแกงที่คุ้นเคย" },
+      { no: 12, symbol: "Mg", th: "แมกนีเซียม", en: "Magnesium", fact: "โลหะเบาที่ให้แสงขาวสว่างเมื่อเผา ใช้ในโลหะผสมและดอกไม้ไฟบางชนิด" },
+      { no: 13, symbol: "Al", th: "อะลูมิเนียม", en: "Aluminium", fact: "เบา ทนสนิม ใช้ทำกระป๋อง เครื่องครัว เครื่องบิน และวัสดุก่อสร้าง" },
+      { no: 14, symbol: "Si", th: "ซิลิคอน", en: "Silicon", fact: "กึ่งโลหะสำคัญของชิปคอมพิวเตอร์ แผงโซลาร์เซลล์ และพบมากในทราย" },
+      { no: 15, symbol: "P", th: "ฟอสฟอรัส", en: "Phosphorus", fact: "สำคัญต่อดีเอ็นเอ กระดูก และปุ๋ย ช่วยให้พืชเจริญเติบโต" },
+      { no: 16, symbol: "S", th: "กำมะถัน", en: "Sulfur", fact: "ธาตุสีเหลือง พบใกล้ภูเขาไฟและแร่ ใช้ผลิตกรดซัลฟิวริกจำนวนมาก" },
+      { no: 17, symbol: "Cl", th: "คลอรีน", en: "Chlorine", fact: "ใช้ฆ่าเชื้อในน้ำประปาและสระว่ายน้ำเมื่ออยู่ในรูปสารประกอบที่เหมาะสม" },
+      { no: 18, symbol: "Ar", th: "อาร์กอน", en: "Argon", fact: "แก๊สเฉื่อยในอากาศ ใช้เติมหลอดไฟและป้องกันปฏิกิริยาในงานเชื่อม" },
+      { no: 19, symbol: "K", th: "โพแทสเซียม", en: "Potassium", fact: "จำเป็นต่อการทำงานของเซลล์ กล้ามเนื้อ และระบบประสาท พบในกล้วยและมันฝรั่ง" },
+      { no: 20, symbol: "Ca", th: "แคลเซียม", en: "Calcium", fact: "สำคัญต่อกระดูกและฟัน พบมากในหินปูน เปลือกหอย และผลิตภัณฑ์นม" },
+      { no: 21, symbol: "Sc", th: "สแกนเดียม", en: "Scandium", fact: "ช่วยเพิ่มความแข็งแรงให้โลหะผสมอะลูมิเนียมในงานน้ำหนักเบา" },
+      { no: 22, symbol: "Ti", th: "ไทเทเนียม", en: "Titanium", fact: "แข็งแรง เบา ทนการกัดกร่อน ใช้ในอากาศยาน อุปกรณ์แพทย์ และเครื่องประดับ" },
+      { no: 23, symbol: "V", th: "วาเนเดียม", en: "Vanadium", fact: "เพิ่มความแข็งแรงของเหล็กกล้า และใช้ในแบตเตอรี่กักเก็บพลังงานขนาดใหญ่" },
+      { no: 24, symbol: "Cr", th: "โครเมียม", en: "Chromium", fact: "ใช้ชุบโลหะให้เงาและทนสนิม เป็นส่วนผสมสำคัญของสเตนเลส" },
+      { no: 25, symbol: "Mn", th: "แมงกานีส", en: "Manganese", fact: "ใช้ปรับปรุงเหล็กกล้า และเป็นธาตุปริมาณน้อยที่ร่างกายต้องใช้" },
+      { no: 26, symbol: "Fe", th: "เหล็ก", en: "Iron", fact: "โลหะสำคัญของเหล็กกล้า อาคาร เครื่องมือ และฮีโมโกลบินในเลือด" },
+      { no: 27, symbol: "Co", th: "โคบอลต์", en: "Cobalt", fact: "ใช้ในแม่เหล็กแรงสูง แบตเตอรี่บางชนิด และให้สีฟ้าในแก้วกับเซรามิก" },
+      { no: 28, symbol: "Ni", th: "นิกเกิล", en: "Nickel", fact: "ทนการกัดกร่อน ใช้ทำสเตนเลส เหรียญ แบตเตอรี่ และการชุบโลหะ" },
+      { no: 29, symbol: "Cu", th: "ทองแดง", en: "Copper", fact: "นำไฟฟ้าได้ดีมาก ใช้ทำสายไฟ มอเตอร์ ท่อ และโลหะผสมทองเหลือง" },
+      { no: 30, symbol: "Zn", th: "สังกะสี", en: "Zinc", fact: "ใช้เคลือบเหล็กกันสนิม และเป็นธาตุจำเป็นต่อเอนไซม์ในร่างกาย" },
+      { no: 31, symbol: "Ga", th: "แกลเลียม", en: "Gallium", fact: "หลอมเหลวใกล้อุณหภูมิห้อง สารประกอบของมันใช้ในแอลอีดีและอิเล็กทรอนิกส์" },
+      { no: 32, symbol: "Ge", th: "เจอร์เมเนียม", en: "Germanium", fact: "กึ่งโลหะที่ใช้ในใยแก้วนำแสง อุปกรณ์อินฟราเรด และสารกึ่งตัวนำ" },
+      { no: 33, symbol: "As", th: "สารหนู", en: "Arsenic", fact: "กึ่งโลหะที่สารประกอบหลายชนิดมีพิษ แต่มีการใช้เฉพาะทางในอุตสาหกรรม" },
+      { no: 34, symbol: "Se", th: "ซีลีเนียม", en: "Selenium", fact: "จำเป็นในปริมาณน้อย และใช้ในแก้ว สี และอุปกรณ์อิเล็กทรอนิกส์บางชนิด" },
+      { no: 35, symbol: "Br", th: "โบรมีน", en: "Bromine", fact: "แฮโลเจนของเหลวสีน้ำตาลแดง ใช้ในสารหน่วงไฟและงานเคมีเฉพาะทาง" },
+      { no: 36, symbol: "Kr", th: "คริปทอน", en: "Krypton", fact: "แก๊สเฉื่อยที่ใช้ในหลอดไฟบางชนิด เลเซอร์ และงานแสงสว่างเฉพาะทาง" },
+      { no: 37, symbol: "Rb", th: "รูบิเดียม", en: "Rubidium", fact: "โลหะแอลคาไลที่ไวต่อปฏิกิริยา ใช้ในนาฬิกาอะตอมและงานวิจัย" },
+      { no: 38, symbol: "Sr", th: "สตรอนเชียม", en: "Strontium", fact: "ให้สีแดงสดในดอกไม้ไฟ และใช้ในวัสดุเซรามิกบางชนิด" },
+      { no: 39, symbol: "Y", th: "อิตเทรียม", en: "Yttrium", fact: "ใช้ในสารเรืองแสง เลเซอร์ และเซรามิกทนความร้อนสูง" },
+      { no: 40, symbol: "Zr", th: "เซอร์โคเนียม", en: "Zirconium", fact: "ทนความร้อนและการกัดกร่อน ใช้ในเตาปฏิกรณ์นิวเคลียร์และเซรามิกแข็งแรง" },
+      { no: 41, symbol: "Nb", th: "ไนโอเบียม", en: "Niobium", fact: "ใช้เพิ่มความแข็งแรงของเหล็กกล้าและทำแม่เหล็กตัวนำยิ่งยวด" },
+      { no: 42, symbol: "Mo", th: "โมลิบดีนัม", en: "Molybdenum", fact: "ทนความร้อนสูง ใช้เพิ่มความแข็งแรงให้เหล็กกล้าและพบในเอนไซม์บางชนิด" },
+      { no: 43, symbol: "Tc", th: "เทคนีเชียม", en: "Technetium", fact: "ธาตุแรกที่มนุษย์สร้างขึ้น ไม่มีไอโซโทปเสถียร ใช้ในเวชศาสตร์นิวเคลียร์" },
+      { no: 44, symbol: "Ru", th: "รูทีเนียม", en: "Ruthenium", fact: "โลหะกลุ่มแพลทินัม ใช้ในหน้าสัมผัสไฟฟ้าและตัวเร่งปฏิกิริยา" },
+      { no: 45, symbol: "Rh", th: "โรเดียม", en: "Rhodium", fact: "สะท้อนแสงดี ทนการกัดกร่อน ใช้ชุบเครื่องประดับและตัวเร่งรถยนต์" },
+      { no: 46, symbol: "Pd", th: "แพลเลเดียม", en: "Palladium", fact: "ดูดซับไฮโดรเจนได้ดี ใช้ในตัวเร่งปฏิกิริยา เครื่องประดับ และอิเล็กทรอนิกส์" },
+      { no: 47, symbol: "Ag", th: "เงิน", en: "Silver", fact: "นำไฟฟ้าและความร้อนได้ดีที่สุดในโลหะ ใช้ในเครื่องประดับและวงจรไฟฟ้า" },
+      { no: 48, symbol: "Cd", th: "แคดเมียม", en: "Cadmium", fact: "เคยใช้ในแบตเตอรี่และสีบางชนิด แต่ต้องควบคุมเพราะมีพิษ" },
+      { no: 49, symbol: "In", th: "อินเดียม", en: "Indium", fact: "โลหะอ่อน ใช้ในจอสัมผัสและจอแบนผ่านสารอินเดียมทินออกไซด์" },
+      { no: 50, symbol: "Sn", th: "ดีบุก", en: "Tin", fact: "ใช้เคลือบเหล็กทำกระป๋อง และผสมกับทองแดงเป็นบรอนซ์" },
+      { no: 51, symbol: "Sb", th: "พลวง", en: "Antimony", fact: "ใช้เพิ่มความแข็งให้โลหะผสม และใช้ในสารหน่วงไฟบางชนิด" },
+      { no: 52, symbol: "Te", th: "เทลลูเรียม", en: "Tellurium", fact: "กึ่งโลหะที่ใช้ในแผงโซลาร์เซลล์บางชนิดและอุปกรณ์เทอร์โมอิเล็กทริก" },
+      { no: 53, symbol: "I", th: "ไอโอดีน", en: "Iodine", fact: "จำเป็นต่อฮอร์โมนไทรอยด์ และมักเติมในเกลือบริโภคเพื่อป้องกันการขาดไอโอดีน" },
+      { no: 54, symbol: "Xe", th: "ซีนอน", en: "Xenon", fact: "ใช้ในหลอดไฟกำลังสูง แฟลชถ่ายภาพ และเครื่องยนต์ไอออนบางแบบ" },
+      { no: 55, symbol: "Cs", th: "ซีเซียม", en: "Caesium", fact: "ใช้ในนาฬิกาอะตอมที่แม่นยำมาก และเป็นโลหะแอลคาไลที่ไวต่อปฏิกิริยา" },
+      { no: 56, symbol: "Ba", th: "แบเรียม", en: "Barium", fact: "สารประกอบแบเรียมใช้ช่วยเอกซเรย์ทางเดินอาหาร และให้สีเขียวในดอกไม้ไฟ" },
+      { no: 57, symbol: "La", th: "แลนทานัม", en: "Lanthanum", fact: "ใช้ในเลนส์คุณภาพสูง แบตเตอรี่ และตัวเร่งปฏิกิริยาบางชนิด" },
+      { no: 58, symbol: "Ce", th: "ซีเรียม", en: "Cerium", fact: "ธาตุหายากที่พบมากที่สุดในกลุ่มนี้ ใช้ในผงขัดแก้วและหินจุดไฟ" },
+      { no: 59, symbol: "Pr", th: "เพรซีโอดิเมียม", en: "Praseodymium", fact: "ใช้ทำแม่เหล็ก โลหะผสม และให้สีเหลืองเขียวในแก้วกับเซรามิก" },
+      { no: 60, symbol: "Nd", th: "นีโอดิเมียม", en: "Neodymium", fact: "ใช้ทำแม่เหล็กแรงสูงในหูฟัง มอเตอร์ ฮาร์ดดิสก์ และกังหันลม" },
+      { no: 61, symbol: "Pm", th: "โพรมีเทียม", en: "Promethium", fact: "ธาตุกัมมันตรังสีที่พบได้น้อยมาก ใช้ในแหล่งพลังงานขนาดเล็กบางชนิด" },
+      { no: 62, symbol: "Sm", th: "ซาแมเรียม", en: "Samarium", fact: "ใช้ทำแม่เหล็กที่ทนความร้อนสูง และใช้ในงานนิวเคลียร์กับเลเซอร์บางชนิด" },
+      { no: 63, symbol: "Eu", th: "ยูโรเพียม", en: "Europium", fact: "ให้แสงสีแดงและน้ำเงินในสารเรืองแสง ใช้ในจอภาพและธนบัตรบางชนิด" },
+      { no: 64, symbol: "Gd", th: "แกโดลิเนียม", en: "Gadolinium", fact: "มีสมบัติแม่เหล็กเด่น ใช้เป็นสารเพิ่มความคมชัดในการตรวจ MRI บางชนิด" },
+      { no: 65, symbol: "Tb", th: "เทอร์เบียม", en: "Terbium", fact: "ใช้ในสารเรืองแสงสีเขียว แม่เหล็ก และอุปกรณ์อิเล็กทรอนิกส์บางชนิด" },
+      { no: 66, symbol: "Dy", th: "ดิสโพรเซียม", en: "Dysprosium", fact: "ช่วยให้แม่เหล็กทนความร้อนสูง ใช้ในมอเตอร์รถไฟฟ้าและกังหันลม" },
+      { no: 67, symbol: "Ho", th: "โฮลเมียม", en: "Holmium", fact: "มีสมบัติแม่เหล็กสูงมาก ใช้ในเลเซอร์และงานวิจัยด้านแม่เหล็ก" },
+      { no: 68, symbol: "Er", th: "เออร์เบียม", en: "Erbium", fact: "ใช้ขยายสัญญาณในใยแก้วนำแสง และให้สีชมพูในแก้วบางชนิด" },
+      { no: 69, symbol: "Tm", th: "ทูเลียม", en: "Thulium", fact: "พบได้น้อย ใช้ในเลเซอร์และแหล่งรังสีเอกซ์แบบพกพาบางชนิด" },
+      { no: 70, symbol: "Yb", th: "อิตเทอร์เบียม", en: "Ytterbium", fact: "ใช้ในนาฬิกาอะตอม เลเซอร์ และงานวิจัยด้านวัสดุขั้นสูง" },
+      { no: 71, symbol: "Lu", th: "ลูทีเทียม", en: "Lutetium", fact: "แลนทาไนด์หนักและแพง ใช้ในตัวเร่งปฏิกิริยาและเวชศาสตร์นิวเคลียร์บางงาน" },
+      { no: 72, symbol: "Hf", th: "แฮฟเนียม", en: "Hafnium", fact: "ทนความร้อนสูงและดูดกลืนนิวตรอนได้ดี ใช้ในงานนิวเคลียร์และไมโครชิป" },
+      { no: 73, symbol: "Ta", th: "แทนทาลัม", en: "Tantalum", fact: "ทนการกัดกร่อนมาก ใช้ทำตัวเก็บประจุและอุปกรณ์แพทย์บางอย่าง" },
+      { no: 74, symbol: "W", th: "ทังสเตน", en: "Tungsten", fact: "มีจุดหลอมเหลวสูงที่สุดในบรรดาโลหะ ใช้ในงานทนความร้อนและความแข็งสูง" },
+      { no: 75, symbol: "Re", th: "รีเนียม", en: "Rhenium", fact: "โลหะหายากที่ทนความร้อนสูง ใช้ในเครื่องยนต์ไอพ่นและตัวเร่งปฏิกิริยา" },
+      { no: 76, symbol: "Os", th: "ออสเมียม", en: "Osmium", fact: "เป็นหนึ่งในธาตุที่มีความหนาแน่นสูงมาก ใช้ในโลหะผสมแข็งและงานเฉพาะทาง" },
+      { no: 77, symbol: "Ir", th: "อิริเดียม", en: "Iridium", fact: "ทนการกัดกร่อนและความร้อนสูงมาก ใช้ในหัวเทียนและอุปกรณ์วิทยาศาสตร์" },
+      { no: 78, symbol: "Pt", th: "แพลทินัม", en: "Platinum", fact: "ทนการกัดกร่อนและเป็นตัวเร่งปฏิกิริยาดี ใช้ในเครื่องประดับและตัวเร่งรถยนต์" },
+      { no: 79, symbol: "Au", th: "ทองคำ", en: "Gold", fact: "ไม่หมองง่าย นำไฟฟ้าดี ใช้ในเครื่องประดับ อิเล็กทรอนิกส์ และการลงทุน" },
+      { no: 80, symbol: "Hg", th: "ปรอท", en: "Mercury", fact: "โลหะของเหลวที่อุณหภูมิห้อง เคยใช้ในเทอร์โมมิเตอร์ แต่ต้องระวังพิษ" },
+      { no: 81, symbol: "Tl", th: "แทลเลียม", en: "Thallium", fact: "โลหะอ่อนที่สารประกอบหลายชนิดเป็นพิษ ใช้ในงานเฉพาะทาง" },
+      { no: 82, symbol: "Pb", th: "ตะกั่ว", en: "Lead", fact: "หนาแน่นสูงและกันรังสีได้ดี แต่เป็นพิษ จึงลดการใช้ในสีและน้ำมัน" },
+      { no: 83, symbol: "Bi", th: "บิสมัท", en: "Bismuth", fact: "โลหะหนักที่มีพิษต่ำกว่าหลายธาตุใกล้เคียง ใช้ในยาและโลหะผสมหลอมต่ำ" },
+      { no: 84, symbol: "Po", th: "โพโลเนียม", en: "Polonium", fact: "ธาตุกัมมันตรังสีหายากมาก ค้นพบโดยมารีและปีแอร์ กูรี" },
+      { no: 85, symbol: "At", th: "แอสทาทีน", en: "Astatine", fact: "หนึ่งในธาตุธรรมชาติที่หายากที่สุดบนโลก มีไอโซโทปกัมมันตรังสีทั้งหมด" },
+      { no: 86, symbol: "Rn", th: "เรดอน", en: "Radon", fact: "แก๊สกัมมันตรังสีจากการสลายตัวของยูเรเนียมในดินและหิน อาจสะสมในอาคาร" },
+      { no: 87, symbol: "Fr", th: "แฟรนเซียม", en: "Francium", fact: "โลหะแอลคาไลที่หายากและกัมมันตรังสีมาก จึงศึกษาได้ยาก" },
+      { no: 88, symbol: "Ra", th: "เรเดียม", en: "Radium", fact: "เรืองแสงจากกัมมันตรังสี เคยใช้ในนาฬิกาเรืองแสง แต่ปัจจุบันหลีกเลี่ยง" },
+      { no: 89, symbol: "Ac", th: "แอกทิเนียม", en: "Actinium", fact: "ธาตุกัมมันตรังสีที่เป็นจุดเริ่มของกลุ่มแอกทิไนด์" },
+      { no: 90, symbol: "Th", th: "ทอเรียม", en: "Thorium", fact: "ธาตุกัมมันตรังสีอ่อน พบในแร่ และถูกศึกษาเป็นเชื้อเพลิงนิวเคลียร์ทางเลือก" },
+      { no: 91, symbol: "Pa", th: "โพรแทกทิเนียม", en: "Protactinium", fact: "ธาตุกัมมันตรังสีที่หายาก ใช้หลัก ๆ ในงานวิจัย" },
+      { no: 92, symbol: "U", th: "ยูเรเนียม", en: "Uranium", fact: "ธาตุหนักกัมมันตรังสี ใช้เป็นเชื้อเพลิงนิวเคลียร์และแหล่งศึกษาพลังงานนิวเคลียร์" },
+      { no: 93, symbol: "Np", th: "เนปทูเนียม", en: "Neptunium", fact: "ธาตุทรานส์ยูเรเนียมตัวแรก ตั้งชื่อตามดาวเนปจูน" },
+      { no: 94, symbol: "Pu", th: "พลูโทเนียม", en: "Plutonium", fact: "ธาตุกัมมันตรังสีที่ใช้ในงานนิวเคลียร์บางประเภท ต้องควบคุมอย่างเข้มงวด" },
+      { no: 95, symbol: "Am", th: "อะเมริเซียม", en: "Americium", fact: "ใช้ในเครื่องตรวจจับควันบางชนิดในปริมาณน้อยมาก" },
+      { no: 96, symbol: "Cm", th: "คูเรียม", en: "Curium", fact: "ตั้งชื่อตามครอบครัวกูรี ใช้ในงานวิจัยและแหล่งพลังงานอวกาศบางชนิด" },
+      { no: 97, symbol: "Bk", th: "เบอร์คีเลียม", en: "Berkelium", fact: "ตั้งชื่อตามเมืองเบิร์กลีย์ ใช้ในงานวิจัยเพื่อสร้างธาตุหนักกว่า" },
+      { no: 98, symbol: "Cf", th: "แคลิฟอร์เนียม", en: "Californium", fact: "ปล่อยนิวตรอนได้ ใช้ในงานวิเคราะห์วัสดุและงานนิวเคลียร์บางชนิด" },
+      { no: 99, symbol: "Es", th: "ไอน์สไตเนียม", en: "Einsteinium", fact: "ตั้งชื่อตามอัลเบิร์ต ไอน์สไตน์ ค้นพบจากผลิตภัณฑ์การทดลองนิวเคลียร์" },
+      { no: 100, symbol: "Fm", th: "เฟอร์เมียม", en: "Fermium", fact: "ตั้งชื่อตามเอนรีโก แฟร์มี ใช้ศึกษาคุณสมบัติของธาตุหนัก" },
+      { no: 101, symbol: "Md", th: "เมนเดลีเวียม", en: "Mendelevium", fact: "ตั้งชื่อตามเมนเดเลเยฟ ผู้พัฒนาตารางธาตุ เป็นธาตุสังเคราะห์ปริมาณน้อยมาก" },
+      { no: 102, symbol: "No", th: "โนเบเลียม", en: "Nobelium", fact: "ตั้งชื่อตามอัลเฟรด โนเบล เป็นธาตุสังเคราะห์ที่ใช้ในงานวิจัย" },
+      { no: 103, symbol: "Lr", th: "ลอว์เรนเซียม", en: "Lawrencium", fact: "ตั้งชื่อตามเออร์เนสต์ ลอว์เรนซ์ ผู้พัฒนาไซโคลตรอน" },
+      { no: 104, symbol: "Rf", th: "รัทเทอร์ฟอร์เดียม", en: "Rutherfordium", fact: "ตั้งชื่อตามรัทเทอร์ฟอร์ด เป็นธาตุสังเคราะห์ที่มีครึ่งชีวิตสั้น" },
+      { no: 105, symbol: "Db", th: "ดุบเนียม", en: "Dubnium", fact: "ตั้งชื่อตามเมืองดูบนา แหล่งวิจัยนิวเคลียร์สำคัญ" },
+      { no: 106, symbol: "Sg", th: "ซีบอร์เกียม", en: "Seaborgium", fact: "ตั้งชื่อตามเกล็นน์ ซีบอร์ก ผู้มีบทบาทในการค้นพบธาตุทรานส์ยูเรเนียม" },
+      { no: 107, symbol: "Bh", th: "โบห์เรียม", en: "Bohrium", fact: "ตั้งชื่อตามนีลส์ โบร์ นักฟิสิกส์ผู้เสนอแบบจำลองอะตอมสำคัญ" },
+      { no: 108, symbol: "Hs", th: "ฮัสเซียม", en: "Hassium", fact: "ตั้งชื่อตามรัฐเฮสส์ในเยอรมนี เป็นธาตุสังเคราะห์ที่สลายตัวรวดเร็ว" },
+      { no: 109, symbol: "Mt", th: "ไมต์เนเรียม", en: "Meitnerium", fact: "ตั้งชื่อตามลีเซ ไมต์เนอร์ ผู้มีบทบาทสำคัญในการอธิบายฟิชชันนิวเคลียร์" },
+      { no: 110, symbol: "Ds", th: "ดาร์มสแทดเทียม", en: "Darmstadtium", fact: "ตั้งชื่อตามเมืองดาร์มสตัดท์ในเยอรมนี สร้างได้ในเครื่องเร่งอนุภาค" },
+      { no: 111, symbol: "Rg", th: "เรินต์เกเนียม", en: "Roentgenium", fact: "ตั้งชื่อตามวิลเฮล์ม เรินต์เกน ผู้ค้นพบรังสีเอกซ์" },
+      { no: 112, symbol: "Cn", th: "โคเปอร์นิเซียม", en: "Copernicium", fact: "ตั้งชื่อตามนิโคเลาส์ โคเปอร์นิคัส เป็นธาตุสังเคราะห์อายุสั้นมาก" },
+      { no: 113, symbol: "Nh", th: "นิโฮเนียม", en: "Nihonium", fact: "ตั้งชื่อตามคำว่า Nihon หรือญี่ปุ่น เป็นธาตุที่ชื่อเกี่ยวข้องกับญี่ปุ่น" },
+      { no: 114, symbol: "Fl", th: "ฟลีโรเวียม", en: "Flerovium", fact: "ตั้งชื่อตามห้องปฏิบัติการฟลีรอฟในรัสเซีย" },
+      { no: 115, symbol: "Mc", th: "มอสโกเวียม", en: "Moscovium", fact: "ตั้งชื่อตามภูมิภาคมอสโก สร้างได้จากการชนกันของนิวเคลียส" },
+      { no: 116, symbol: "Lv", th: "ลิเวอร์มอเรียม", en: "Livermorium", fact: "ตั้งชื่อตามห้องปฏิบัติการลอว์เรนซ์ลิเวอร์มอร์ในสหรัฐอเมริกา" },
+      { no: 117, symbol: "Ts", th: "เทนเนสซีน", en: "Tennessine", fact: "ตั้งชื่อตามรัฐเทนเนสซี เป็นแฮโลเจนสังเคราะห์ที่มีอายุสั้นมาก" },
+      { no: 118, symbol: "Og", th: "โอกาเนสซอน", en: "Oganesson", fact: "ธาตุลำดับที่ 118 ตั้งชื่อตามยูริ โอกาเนสเซียน และเป็นแก๊สมีตระกูลสังเคราะห์" }
     ];
 
     let score = 0;
@@ -1009,6 +1043,8 @@
       document.getElementById("resultText").innerHTML = "";
       document.getElementById("nextBtn").style.display = "none";
       document.getElementById("feedbackPanel").classList.remove("show");
+      document.getElementById("factText").classList.remove("show");
+      document.getElementById("factText").innerHTML = "";
 
       const choicesBox = document.getElementById("choicesBox");
       choicesBox.innerHTML = "";
@@ -1048,6 +1084,10 @@
       document.getElementById("score").textContent = score;
       document.getElementById("feedbackPanel").classList.add("show");
       document.getElementById("nextBtn").style.display = "inline-block";
+
+      document.getElementById("factText").innerHTML =
+        `<strong>เกร็ดความรู้:</strong> <b>${currentQuestion.element.en}</b>: ${currentQuestion.element.fact}`;
+      document.getElementById("factText").classList.add("show");
     }
 
     function nextQuestion() {
@@ -1066,6 +1106,8 @@
       document.getElementById("nextBtn").style.display = "none";
       document.getElementById("feedbackPanel").classList.add("show");
       document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById("factText").classList.remove("show");
+      document.getElementById("factText").innerHTML = "";
 
       let level = "";
       if (score >= 9) {
@@ -1088,6 +1130,8 @@
       unusedPraises = shuffle(praiseSentences);
       document.getElementById("restartBtn").style.display = "none";
       document.getElementById("feedbackPanel").classList.remove("show");
+      document.getElementById("factText").classList.remove("show");
+      document.getElementById("factText").innerHTML = "";
       showQuestion();
     }
 
