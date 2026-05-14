@@ -158,7 +158,7 @@
 
     .info {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 16px;
     }
@@ -177,6 +177,16 @@
       margin-top: 4px;
       font-size: clamp(15px, 4vw, 18px);
       color: #fff8c5;
+    }
+
+    .timer-info {
+      color: var(--red);
+    }
+
+    .timer-info span {
+      color: #000000;
+      font-size: clamp(22px, 5.4vw, 28px);
+      line-height: 1;
     }
 
     .symbol-box {
@@ -280,6 +290,11 @@
       color: #eaf5ff;
     }
 
+    .feedback-panel .result {
+      min-height: 0;
+      margin-bottom: 2px;
+    }
+
     .controls {
       text-align: center;
     }
@@ -297,6 +312,10 @@
       min-width: 150px;
       min-height: 50px;
       box-shadow: 0 12px 20px rgba(255, 176, 0, 0.35), 0 0 18px rgba(255, 241, 77, 0.30);
+    }
+
+    .next-btn {
+      margin-top: 2px;
     }
 
     .next-btn:hover, .restart-btn:hover {
@@ -485,6 +504,10 @@
         padding: 10px 22px;
       }
 
+      .feedback-panel .next-btn {
+        margin-top: 2px;
+      }
+
       .small-note,
       .footer-badges {
         display: none;
@@ -664,6 +687,10 @@
         font-size: 15px !important;
       }
 
+      .feedback-panel .next-btn {
+        margin-top: 2px !important;
+      }
+
       .orbit.one,
       .orbit.two {
         opacity: 0.45;
@@ -731,6 +758,10 @@
         padding: 8px 18px !important;
         font-size: 15px !important;
       }
+
+      .feedback-panel .next-btn {
+        margin-top: 2px !important;
+      }
     }
 
 
@@ -742,7 +773,7 @@
       background: rgba(255, 255, 255, 0.14);
       border: 1px solid rgba(255, 255, 255, 0.22);
       color: #f8fbff;
-      font-size: 14px;
+      font-size: clamp(16px, 4.4vw, 18px);
       line-height: 1.45;
       text-align: left;
     }
@@ -760,7 +791,7 @@
         margin-top: 8px;
         padding: 8px 10px;
         border-radius: 14px;
-        font-size: 13px;
+        font-size: 15px;
         line-height: 1.35;
       }
     }
@@ -800,6 +831,7 @@
       <div class="info">
         <div>ข้อ<span id="round">1/10</span></div>
         <div>คะแนน<span id="score">0</span></div>
+        <div class="timer-info">⏰<span id="timer">5</span></div>
         <div>ธาตุทั้งหมด<span>118</span></div>
       </div>
 
@@ -955,8 +987,11 @@
     let score = 0;
     let round = 1;
     const totalQuestions = 10;
+    const secondsPerQuestion = 5;
     let currentQuestion = null;
     let answered = false;
+    let timeLeft = secondsPerQuestion;
+    let timerId = null;
 
     const praiseSentences = [
       "ยอดเยี่ยมมาก! ตอบได้แม่นมาก",
@@ -1023,7 +1058,56 @@
       return { element, type, questionText, correctAnswer, displaySymbol, choices };
     }
 
+    function stopTimer() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function startTimer() {
+      stopTimer();
+      timeLeft = secondsPerQuestion;
+      document.getElementById("timer").textContent = timeLeft;
+
+      timerId = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          stopTimer();
+          handleTimeUp();
+        }
+      }, 1000);
+    }
+
+    function showFact() {
+      document.getElementById("factText").innerHTML =
+        `<strong>เกร็ดความรู้:</strong> <b>${currentQuestion.element.en}</b>: ${currentQuestion.element.fact}`;
+      document.getElementById("factText").classList.add("show");
+    }
+
+    function handleTimeUp() {
+      if (answered) return;
+      answered = true;
+
+      const allButtons = document.querySelectorAll(".choices button");
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === currentQuestion.correctAnswer) {
+          btn.classList.add("correct");
+        }
+      });
+
+      document.getElementById("resultText").innerHTML =
+        `⏰ หมดเวลาจ้า<small>เฉลยคือ ${currentQuestion.correctAnswer}</small>`;
+      document.getElementById("feedbackPanel").classList.add("show");
+      document.getElementById("nextBtn").style.display = "inline-block";
+      showFact();
+    }
+
     function showQuestion() {
+      stopTimer();
       answered = false;
       currentQuestion = createQuestion();
 
@@ -1048,11 +1132,14 @@
         };
         choicesBox.appendChild(button);
       });
+
+      startTimer();
     }
 
     function checkAnswer(button, selectedAnswer) {
       if (answered) return;
       answered = true;
+      stopTimer();
 
       const allButtons = document.querySelectorAll(".choices button");
       allButtons.forEach(btn => {
@@ -1075,10 +1162,7 @@
       document.getElementById("score").textContent = score;
       document.getElementById("feedbackPanel").classList.add("show");
       document.getElementById("nextBtn").style.display = "inline-block";
-
-      document.getElementById("factText").innerHTML =
-        `<strong>เกร็ดความรู้:</strong> <b>${currentQuestion.element.en}</b>: ${currentQuestion.element.fact}`;
-      document.getElementById("factText").classList.add("show");
+      showFact();
     }
 
     function nextQuestion() {
@@ -1091,6 +1175,8 @@
     }
 
     function endGame() {
+      stopTimer();
+      document.getElementById("timer").textContent = "0";
       document.getElementById("symbolBox").textContent = "🏆";
       document.getElementById("questionText").textContent = "จบเกมแล้ว!";
       document.getElementById("choicesBox").innerHTML = "";
